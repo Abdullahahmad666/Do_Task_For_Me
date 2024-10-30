@@ -5,6 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     tools:context=".SplashScreen">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/splashimage"
+        android:contentDescription="Splash"
+        tools:ignore="MissingConstraints"
+
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
