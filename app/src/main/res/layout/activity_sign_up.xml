@@ -18,7 +18,8 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/back_arrow"
-            android:layout_marginStart="16dp"/>
+            android:layout_marginStart="16dp"
+            android:id="@+id/ivbackarrow"/>
 
         <!-- Sign Up Text -->
         <TextView
@@ -36,6 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="@string/first_name"
+        android:layout_marginTop="30dp"
         android:id="@+id/etfirst"/>
 
     <!-- Last Name Input -->
@@ -79,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/sign_up"
-        android:backgroundTint="#000000"
+        android:backgroundTint="@color/blue"
         android:textColor="#FFFFFF"
         android:id="@+id/btnsignup"/>
 
