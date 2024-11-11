@@ -1,0 +1,66 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <!-- Top black background with logo -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="#16225c"
+        android:gravity="center">
+
+        <!-- Logo Placeholder -->
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/splashimage" />
+    </LinearLayout>
+
+    <!-- Login Form -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:textColor="#000000"/>
+
+    <!-- Email Input -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"/>
+
+    <!-- Password Input -->
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/password"
+        android:inputType="textPassword"/>
+
+    <!-- Login Button -->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/login"
+        android:backgroundTint="#000000"
+        android:textColor="#FFFFFF"/>
+
+    <!-- Sign Up Link -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/don_t_have_an_account_sign_up"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:textColor="#000000"/>
+
+</LinearLayout>
