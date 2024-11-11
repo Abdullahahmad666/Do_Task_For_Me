@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:id="@+id/main">
 
     <!-- Top black background with logo -->
     <LinearLayout
@@ -16,7 +17,8 @@
         <ImageView
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:src="@drawable/splashimage" />
+            android:src="@drawable/splashimage"
+            android:id="@+id/ivimg"/>
     </LinearLayout>
 
     <!-- Login Form -->
@@ -35,7 +37,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="@string/email"
-        android:inputType="textEmailAddress"/>
+        android:inputType="textEmailAddress"
+        android:id="@+id/etemail"/>
 
     <!-- Password Input -->
     <EditText
@@ -43,7 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:hint="@string/password"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword"
+        android:id="@+id/etpassword"/>
 
     <!-- Login Button -->
     <Button
@@ -52,7 +56,8 @@
         android:layout_margin="16dp"
         android:text="@string/login"
         android:backgroundTint="#000000"
-        android:textColor="#FFFFFF"/>
+        android:textColor="#FFFFFF"
+        android:id="@+id/loginbtn"/>
 
     <!-- Sign Up Link -->
     <TextView
@@ -61,6 +66,8 @@
         android:text="@string/don_t_have_an_account_sign_up"
         android:gravity="center"
         android:layout_marginTop="8dp"
-        android:textColor="#000000"/>
+        android:textColor="#000000"
+        android:id="@+id/gotosignup"/>
+
 
 </LinearLayout>

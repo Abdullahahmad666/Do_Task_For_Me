@@ -31,7 +31,7 @@ public class SplashScreen extends AppCompatActivity {
 
         new Handler().postDelayed(() -> {
             // Start the next activity with ActivityResultLauncher
-            Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+            Intent intent = new Intent(SplashScreen.this, Login.class);
             startActivity(intent);
             finish();  // Close the splash activity
         }, 5000);  // Duration of splash screen
