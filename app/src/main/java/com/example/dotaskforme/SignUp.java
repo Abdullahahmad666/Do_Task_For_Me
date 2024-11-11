@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class SignUp extends AppCompatActivity {
     TextView gotosignin;
     ImageView ivbackarrow;
+    Button btnsignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class SignUp extends AppCompatActivity {
         });
         gotosignin = findViewById(R.id.gotosignin);
         ivbackarrow = findViewById(R.id.ivbackarrow);
+        btnsignup = findViewById(R.id.btnsignup);
 
         gotosignin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,6 +43,14 @@ public class SignUp extends AppCompatActivity {
         });
 
         ivbackarrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SignUp.this,Login.class);
+                startActivity(i);
+                finish();
+            }
+        });
+        btnsignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(SignUp.this,Login.class);
