@@ -12,4 +12,5 @@
     <string name="already_have_an_account_sign_in">Already have an account? Sign In</string>
     <string name="login">Login</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? Sign Up</string>
+    <string name="google_icon">Google Icon</string>
 </resources>
