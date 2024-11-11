@@ -6,7 +6,7 @@
     <translate
         android:fromYDelta="-100%"
         android:toYDelta="0%"
-        android:duration="1000" />
+        android:duration="2000" />
 
     <!-- Scale Animation: Slight zoom-in effect -->
     <scale
@@ -14,7 +14,7 @@
         android:toXScale="1.0"
         android:fromYScale="0.8"
         android:toYScale="1.0"
-        android:duration="1000"
+        android:duration="2000"
         android:pivotX="50%"
         android:pivotY="50%" />
 </set>
