@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/back_arrow"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_about_us"
+        android:icon="@drawable/back_arrow"
+        android:title="About Us" />
+    <item
+        android:id="@+id/nav_services"
+        android:icon="@drawable/back_arrow"
+        android:title="Services" />
+    <item
+        android:id="@+id/nav_projects"
+        android:icon="@drawable/back_arrow"
+        android:title="Projects" />
+    <item
+        android:id="@+id/nav_contact_us"
+        android:icon="@drawable/back_arrow"
+        android:title="Contact Us" />
+    <item
+        android:id="@+id/nav_login"
+        android:icon="@drawable/back_arrow"
+    android:title="Login to Dashboard" />
+    <item
+        android:id="@+id/nav_assignment"
+        android:icon="@drawable/back_arrow"
+    android:title="Get Your Assignment" />
+</menu>

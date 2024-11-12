@@ -1,24 +1,86 @@
 package com.example.dotaskforme;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 
-import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import com.google.android.material.navigation.NavigationView;
+
+
 
 public class MainActivity extends AppCompatActivity {
 
+    private DrawerLayout drawerLayout;
+
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+
+        // Set the default fragment to HomeFragment
+        if (savedInstanceState == null) {
+            loadFragment(new HomeFragment());
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+
+        // Handle navigation item clicks
+        navigationView.setNavigationItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+
+            int id = item.getItemId(); // Get the clicked item's ID
+
+            if (id == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+            } else if (id == R.id.nav_about_us) {
+                selectedFragment = new AboutUsFragment();
+            } else if (id == R.id.nav_services) {
+                selectedFragment = new ServicesFragment();
+            } else if (id == R.id.nav_projects) {
+                selectedFragment = new ProjectsFragment();
+            } else if (id == R.id.nav_contact_us) {
+                selectedFragment = new ContactUsFragment();
+            } else if (id == R.id.nav_login) {
+                // Handle login action
+            } else if (id == R.id.nav_assignment) {
+                // Handle assignment action
+            }
+
+            if (selectedFragment != null) {
+                loadFragment(selectedFragment);
+            }
+            drawerLayout.closeDrawer(GravityCompat.START);
+            return true;
         });
+
+        // Handle close button in the header
+        View headerView = navigationView.getHeaderView(0);
+        headerView.findViewById(R.id.close_button).setOnClickListener(v -> drawerLayout.closeDrawer(GravityCompat.START));
+    }
+
+    // Method to load fragments
+    private void loadFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
