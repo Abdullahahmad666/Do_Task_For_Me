@@ -15,7 +15,7 @@ import com.google.android.material.navigation.NavigationView;
 
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements HomeFragment.DrawerListener {
 
     private DrawerLayout drawerLayout;
 
@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
+
         // Handle close button in the header
         View headerView = navigationView.getHeaderView(0);
         headerView.findViewById(R.id.close_button).setOnClickListener(v -> drawerLayout.closeDrawer(GravityCompat.START));
@@ -74,13 +75,12 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.commit();
     }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    public void openDrawer() {
+        if (drawerLayout != null) {
+            drawerLayout.openDrawer(GravityCompat.START);
         }
+
+
+
     }
 }

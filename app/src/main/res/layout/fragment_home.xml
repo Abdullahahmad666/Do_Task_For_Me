@@ -3,12 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue"
     tools:context=".HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <!-- Image on the left -->
+    <ImageView
+        android:id="@+id/ivlogo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="start|top"
+        android:src="@drawable/splashimage"
+        android:padding="16dp" />
+
+    <!-- Icon on the right top of the screen -->
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top"
+        android:src="@drawable/back_arrow"
+
+        android:background="#3bd1d9"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="10dp"
+        android:padding="16dp" />
 
 </FrameLayout>
