@@ -9,11 +9,11 @@
 
     <!-- FrameLayout for Top Icons -->
     <FrameLayout
+        android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        tools:ignore="MissingConstraints"
-        android:id="@+id/frame">
+        tools:ignore="MissingConstraints">
 
         <!-- Image on the left -->
         <ImageView
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|top"
-            android:src="@drawable/back_arrow"
+            android:src="@drawable/drawer_icon"
             android:background="@color/lightblue"
             android:layout_marginTop="20dp"
             android:layout_marginRight="10dp"
@@ -49,7 +49,6 @@
         app:layout_constraintTop_toBottomOf="@id/frame"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         android:layout_marginTop="40dp" />
 
     <!-- Image inside "O" -->
@@ -57,12 +56,12 @@
         android:id="@+id/imageInsideO"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:src="@drawable/splashimage"
-    android:scaleType="centerCrop"
-    app:layout_constraintTop_toBottomOf="@id/textAssignment"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp" />
+        android:src="@drawable/meet"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toBottomOf="@id/textAssignment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
     <!-- "Our Expertise" -->
     <TextView
@@ -85,13 +84,13 @@
         android:layout_height="wrap_content"
         android:text="Complete Your Assignment"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#0084FF"
-        android:drawableEnd="@drawable/back_arrow"
-    android:padding="12dp"
-    app:layout_constraintTop_toBottomOf="@id/textExpertise"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="32dp" />
+        android:backgroundTint="@color/lightblue"
+        android:drawableEnd="@drawable/arrow_up"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/textExpertise"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
 
     <!-- Get Quick Assistance Button -->
     <Button
@@ -101,14 +100,44 @@
         android:text="Get Quick Assistance"
         android:textColor="#FFFFFF"
         android:backgroundTint="#004BB5"
-        android:drawableEnd="@drawable/back_arrow"
-    android:padding="12dp"
-    app:layout_constraintTop_toBottomOf="@id/btnCompleteAssignment"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp" />
+        android:drawableEnd="@drawable/arrow_up"
+        android:padding="12dp"
+        app:layout_constraintTop_toBottomOf="@id/btnCompleteAssignment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
+    <!-- Mathematics Assignments Banner -->
+    <LinearLayout
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightblue"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        app:layout_constraintTop_toBottomOf="@id/btnQuickAssistance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <!-- Spark Icon -->
+        <ImageView
+            android:id="@+id/sparkIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/arrow_up"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp" />
 
+        <!-- Banner Text -->
+        <TextView
+            android:id="@+id/bannerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mathematics Assignments"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"
+            android:layout_gravity="center_vertical" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
