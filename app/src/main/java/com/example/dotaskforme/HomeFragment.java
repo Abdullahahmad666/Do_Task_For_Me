@@ -10,11 +10,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 public class HomeFragment extends Fragment {
     ImageView iv_icon;
+    Context context;
     private DrawerListener drawerListener;
 
     public interface DrawerListener {
@@ -24,6 +28,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        this.context = context;
         if (context instanceof DrawerListener) {
             drawerListener = (DrawerListener) context;
         } else {
@@ -47,5 +52,9 @@ public class HomeFragment extends Fragment {
                 drawerListener.openDrawer();  // Call to open the drawer
             }
         });
+        TextView tvbanner;
+        tvbanner = view.findViewById(R.id.bannerText);
+        Animation textAnimation = AnimationUtils.loadAnimation(context, R.anim.text_animation);
+        tvbanner.startAnimation(textAnimation);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.dotaskforme;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -51,7 +52,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Draw
             } else if (id == R.id.nav_contact_us) {
                 selectedFragment = new ContactUsFragment();
             } else if (id == R.id.nav_login) {
-                // Handle login action
+                Intent i = new Intent(MainActivity.this, Login.class);
+                startActivity(i);
+                finish();
             } else if (id == R.id.nav_assignment) {
                 // Handle assignment action
             }
