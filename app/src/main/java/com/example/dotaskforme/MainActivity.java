@@ -56,7 +56,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Draw
                 startActivity(i);
                 finish();
             } else if (id == R.id.nav_assignment) {
-                // Handle assignment action
+                PlaceOrder placeOrderFragment = new PlaceOrder();
+
+                // Use FragmentManager to replace the current fragment
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, placeOrderFragment) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
+                        .commit();
             }
 
             if (selectedFragment != null) {

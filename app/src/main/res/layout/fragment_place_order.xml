@@ -1,14 +1,40 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlaceOrder">
+    android:background="@color/white"
+    tools:context=".HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- FrameLayout for Top Icons -->
+    <FrameLayout
+        android:id="@+id/frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:background="@color/blue"
+        tools:ignore="MissingConstraints">
 
-</FrameLayout>
+        <!-- Image on the left -->
+        <ImageView
+            android:id="@+id/ivlogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="start|top"
+            android:src="@drawable/splashimage"
+            android:padding="16dp" />
+
+        <!-- Icon on the right top of the screen -->
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:src="@drawable/drawer_icon"
+            android:background="@color/lightblue"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:padding="16dp" />
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
