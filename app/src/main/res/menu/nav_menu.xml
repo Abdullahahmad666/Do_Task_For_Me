@@ -9,7 +9,7 @@
         android:title="About Us" />
     <item
         android:id="@+id/nav_services"
-        android:icon="@drawable/back_arrow"
+        android:icon="@drawable/services"
         android:title="Services" />
     <item
         android:id="@+id/nav_projects"
@@ -21,10 +21,11 @@
         android:title="Contact Us" />
     <item
         android:id="@+id/nav_login"
-        android:icon="@drawable/arrow_up"
-    android:title="Login to Dashboard" />
+        android:icon="@drawable/login"
+    android:title="Login to Dashboard"
+        />
     <item
         android:id="@+id/nav_assignment"
-        android:icon="@drawable/arrow_up"
+        android:icon="@drawable/assignment"
     android:title="Get Your Assignment" />
 </menu>
