@@ -23,7 +23,7 @@
         android:layout_gravity="end|top"
         android:src="@drawable/back_arrow"
 
-        android:background="#3bd1d9"
+        android:background="@color/lightblue"
         android:layout_marginTop="20dp"
         android:layout_marginRight="10dp"
         android:padding="16dp" />
