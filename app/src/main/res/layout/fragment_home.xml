@@ -1,31 +1,114 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
     tools:context=".HomeFragment">
 
-    <!-- Image on the left -->
-    <ImageView
-        android:id="@+id/ivlogo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="start|top"
-        android:src="@drawable/splashimage"
-        android:padding="16dp" />
+    <!-- FrameLayout for Top Icons -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        tools:ignore="MissingConstraints"
+        android:id="@+id/frame">
 
-    <!-- Icon on the right top of the screen -->
-    <ImageView
-        android:id="@+id/iv_icon"
+        <!-- Image on the left -->
+        <ImageView
+            android:id="@+id/ivlogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="start|top"
+            android:src="@drawable/splashimage"
+            android:padding="16dp" />
+
+        <!-- Icon on the right top of the screen -->
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:src="@drawable/back_arrow"
+            android:background="@color/lightblue"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="10dp"
+            android:padding="16dp" />
+    </FrameLayout>
+
+    <!-- "Your Assignment" -->
+    <TextView
+        android:id="@+id/textAssignment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|top"
-        android:src="@drawable/back_arrow"
+        android:text="Your Assignment"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@id/frame"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_marginTop="40dp" />
 
-        android:background="@color/lightblue"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        android:padding="16dp" />
+    <!-- Image inside "O" -->
+    <ImageView
+        android:id="@+id/imageInsideO"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:src="@drawable/splashimage"
+    android:scaleType="centerCrop"
+    app:layout_constraintTop_toBottomOf="@id/textAssignment"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="16dp" />
 
-</FrameLayout>
+    <!-- "Our Expertise" -->
+    <TextView
+        android:id="@+id/textExpertise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Our Expertise"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintTop_toBottomOf="@id/imageInsideO"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <!-- Complete Your Assignment Button -->
+    <Button
+        android:id="@+id/btnCompleteAssignment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Complete Your Assignment"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#0084FF"
+        android:drawableEnd="@drawable/back_arrow"
+    android:padding="12dp"
+    app:layout_constraintTop_toBottomOf="@id/textExpertise"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="32dp" />
+
+    <!-- Get Quick Assistance Button -->
+    <Button
+        android:id="@+id/btnQuickAssistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Quick Assistance"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#004BB5"
+        android:drawableEnd="@drawable/back_arrow"
+    android:padding="12dp"
+    app:layout_constraintTop_toBottomOf="@id/btnCompleteAssignment"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="16dp" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
