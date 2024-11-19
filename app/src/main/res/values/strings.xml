@@ -31,5 +31,9 @@
         <item>Technical Report</item>
         <item>Lab Report</item>
     </string-array>
+    <string-array name="viva">
+    <item>Select Assignment Type</item>
+    <item>English Writing Based Assignments</item>
+    </string-array>
 
 </resources>
