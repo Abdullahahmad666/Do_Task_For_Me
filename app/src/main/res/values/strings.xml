@@ -15,4 +15,21 @@
     <string name="google_icon">Google Icon</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="assignment_types">
+        <item>Select Assignment Type</item>
+        <item>English Writing Based Assignments</item>
+        <item>Research Paper (Thesis)</item>
+        <item>FYP Based</item>
+        <item>All Types of Presentations</item>
+        <item>App Development</item>
+        <item>Game Development</item>
+        <item>Web Development</item>
+        <item>Content Writing for Any Platform</item>
+        <item>Research</item>
+        <item>Semester/Term Project</item>
+        <item>Professional Web App</item>
+        <item>Technical Report</item>
+        <item>Lab Report</item>
+    </string-array>
+
 </resources>
