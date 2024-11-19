@@ -1,80 +1,86 @@
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFFFFF"
-    android:id="@+id/main">
+    android:fillViewport="true">
 
-    <!-- Top black background with logo -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/blue"
-        android:gravity="center">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:id="@+id/main">
 
-        <!-- Logo Placeholder -->
+        <!-- Top black background with logo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/blue"
+            android:gravity="center">
+
+            <!-- Logo Placeholder -->
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/splashimage"
+                android:id="@+id/ivimg"/>
+        </LinearLayout>
+
+        <!-- Login Form -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login"
+            android:textSize="26sp"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:textColor="#000000"/>
+
+        <!-- Email Input -->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:id="@+id/etemail"/>
+
+        <!-- Password Input -->
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:id="@+id/etpassword"/>
+
+        <!-- Login Button -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/login"
+            android:backgroundTint="@color/blue"
+            android:textColor="#FFFFFF"
+            android:id="@+id/loginbtn"/>
+
+        <!-- Sign Up Link -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/don_t_have_an_account_sign_up"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:textColor="#000000"
+            android:id="@+id/gotosignup"/>
+
+        <!-- Google Icon -->
         <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/splashimage"
-            android:id="@+id/ivimg"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/google"
+            android:contentDescription="@string/google_icon" />
     </LinearLayout>
-
-    <!-- Login Form -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/login"
-        android:textSize="26sp"
-        android:gravity="center"
-        android:layout_marginTop="16dp"
-        android:textColor="#000000"/>
-
-    <!-- Email Input -->
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress"
-        android:id="@+id/etemail"/>
-
-    <!-- Password Input -->
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:id="@+id/etpassword"/>
-
-    <!-- Login Button -->
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:text="@string/login"
-        android:backgroundTint="@color/blue"
-        android:textColor="#FFFFFF"
-        android:id="@+id/loginbtn"/>
-
-    <!-- Sign Up Link -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/don_t_have_an_account_sign_up"
-        android:gravity="center"
-        android:layout_marginTop="8dp"
-        android:textColor="#000000"
-        android:id="@+id/gotosignup"/>
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/google"
-        android:contentDescription="@string/google_icon" />
-
-
-</LinearLayout>
+</ScrollView>

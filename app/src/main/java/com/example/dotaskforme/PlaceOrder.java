@@ -31,6 +31,7 @@ public class PlaceOrder extends Fragment {
     Button btn_extra_small,btn_small,btn_large,btn_medium,btn_browse;
     TextView tv_example,tv_possible_deliverables;
     private static final int REQUEST_CODE_PICK_FILE = 1;
+    private TextView fileNameTextView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -80,6 +81,7 @@ public class PlaceOrder extends Fragment {
         btn_browse = view.findViewById(R.id.btn_browse);
         tv_example = view.findViewById(R.id.tv_example);
         tv_possible_deliverables = view.findViewById(R.id.tv_possible_deliverables);
+        fileNameTextView = view.findViewById(R.id.tv_file_name);
 
         btn_extra_small.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,17 +153,29 @@ public class PlaceOrder extends Fragment {
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
         startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
     }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 Uri fileUri = data.getData();
                 if (fileUri != null) {
-                    Toast.makeText(getContext(), "File Selected: " + fileUri.getPath(), Toast.LENGTH_SHORT).show();
-                    // Handle the selected file (e.g., upload it to a server or save locally)
+                    String fileName = getFileName(fileUri);
+                    fileNameTextView.setText(fileName != null ? fileName : "Unknown file");
+                    Toast.makeText(getContext(), "File Selected: " + fileName, Toast.LENGTH_SHORT).show();
                 }
             }
         }
+    }
+
+    private String getFileName(Uri uri) {
+        String path = uri.getPath();
+        if (path != null) {
+            int lastSeparator = path.lastIndexOf('/');
+            return lastSeparator != -1 ? path.substring(lastSeparator + 1) : path;
+        }
+        return null;
     }
 
 }
