@@ -1,11 +1,15 @@
 package com.example.dotaskforme;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -23,8 +28,9 @@ public class PlaceOrder extends Fragment {
     private Spinner assspinner,vivaspinner; // Spinner for Assignment Type
     private EditText etExactDeadline; // EditText for Exact Deadline
     private Context context;
-    Button btn_extra_small,btn_small,btn_large,btn_medium;
+    Button btn_extra_small,btn_small,btn_large,btn_medium,btn_browse;
     TextView tv_example,tv_possible_deliverables;
+    private static final int REQUEST_CODE_PICK_FILE = 1;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -71,6 +77,7 @@ public class PlaceOrder extends Fragment {
         btn_small = view.findViewById(R.id.btn_small);
         btn_medium = view.findViewById(R.id.btn_medium);
         btn_large = view.findViewById(R.id.btn_large);
+        btn_browse = view.findViewById(R.id.btn_browse);
         tv_example = view.findViewById(R.id.tv_example);
         tv_possible_deliverables = view.findViewById(R.id.tv_possible_deliverables);
 
@@ -103,7 +110,7 @@ public class PlaceOrder extends Fragment {
             }
         });
 
-
+        btn_browse.setOnClickListener(v -> openFilePicker());
 
         // Set OnClickListener to show Date and Time Picker
         etExactDeadline.setOnClickListener(v -> showDateTimePicker());
@@ -137,4 +144,24 @@ public class PlaceOrder extends Fragment {
 
         datePickerDialog.show();
     }
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*"); // Allows both images and PDFs
+        String[] mimeTypes = {"application/pdf", "image/*"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        startActivityForResult(intent, REQUEST_CODE_PICK_FILE);
+    }
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                Uri fileUri = data.getData();
+                if (fileUri != null) {
+                    Toast.makeText(getContext(), "File Selected: " + fileUri.getPath(), Toast.LENGTH_SHORT).show();
+                    // Handle the selected file (e.g., upload it to a server or save locally)
+                }
+            }
+        }
+    }
+
 }
