@@ -52,9 +52,14 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Draw
             } else if (id == R.id.nav_contact_us) {
                 selectedFragment = new ContactUsFragment();
             } else if (id == R.id.nav_login) {
-                Intent i = new Intent(MainActivity.this, Login.class);
-                startActivity(i);
-                finish();
+                ManageOrderFragment ManageOrderFragment = new ManageOrderFragment();
+
+                // Use FragmentManager to replace the current fragment
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, ManageOrderFragment) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
+                        .commit();
             } else if (id == R.id.nav_assignment) {
                 PlaceOrder placeOrderFragment = new PlaceOrder();
 
