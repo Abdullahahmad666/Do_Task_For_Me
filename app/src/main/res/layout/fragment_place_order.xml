@@ -543,6 +543,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#001F3F"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
         app:menu="@menu/menu_draw"
         app:headerLayout="@layout/draw_header" />
 

@@ -32,8 +32,8 @@
         <item>Lab Report</item>
     </string-array>
     <string-array name="viva">
-    <item>No</item>
-    <item>Yes (15% increase in price) [We Will Contact You for Timing]</item>
+        <item>No</item>
+        <item>Yes (15% increase in price) [We Will Contact You for Timing]</item>
     </string-array>
 
 </resources>
