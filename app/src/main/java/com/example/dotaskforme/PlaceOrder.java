@@ -10,37 +10,47 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.Calendar;
 
 public class PlaceOrder extends Fragment {
-    private Spinner assspinner,vivaspinner; // Spinner for Assignment Type
+    private Spinner assspinner, vivaspinner; // Spinner for Assignment Type
     private EditText etExactDeadline; // EditText for Exact Deadline
     private Context context;
-    Button btn_extra_small,btn_small,btn_large,btn_medium,btn_browse;
-    TextView tv_example,tv_possible_deliverables;
+    Button btn_extra_small, btn_small, btn_large, btn_medium, btn_browse;
+    TextView tv_example, tv_possible_deliverables;
     private static final int REQUEST_CODE_PICK_FILE = 1;
     private TextView fileNameTextView;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
+    private ImageView ivmenu;
+
+    public PlaceOrder() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-    }
 
-    public PlaceOrder() {
-        // Required empty public constructor
     }
 
     @Override
@@ -58,21 +68,57 @@ public class PlaceOrder extends Fragment {
         assspinner = view.findViewById(R.id.spinner_assignment_type);
         vivaspinner = view.findViewById(R.id.spinner_viva_preparation);
 
-        // Set up the ArrayAdapter for Spinner Assignmnet type
+        // Initialize DrawerLayout and NavigationView
+        drawerLayout = view.findViewById(R.id.draw_header);
+        navigationView = view.findViewById(R.id.order_nav);
+        ivmenu = view.findViewById(R.id.iv_icon);
+
+        ivmenu.setOnClickListener(v -> {
+            // Open the drawer when the icon is clicked
+            openDrawer();
+        });
+
+        // Set up the navigation item click listener
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.nav_home) {
+                Toast.makeText(getActivity(), "Home Selected", Toast.LENGTH_SHORT).show();
+                // Handle Home navigation
+            } else if (id == R.id.nav_how_we_work) {
+                Toast.makeText(getActivity(), "How We Work Selected", Toast.LENGTH_SHORT).show();
+                // Handle How We Work navigation
+            } else if (id == R.id.nav_services) {
+                Toast.makeText(getActivity(), "Services Selected", Toast.LENGTH_SHORT).show();
+                // Handle Services navigation
+            } else if (id == R.id.nav_contact_us) {
+                Toast.makeText(getActivity(), "Contact Us Selected", Toast.LENGTH_SHORT).show();
+                // Handle Contact Us navigation
+            } else if (id == R.id.nav_manage_orders) {
+                Toast.makeText(getActivity(), "Manage Orders Selected", Toast.LENGTH_SHORT).show();
+                // Handle Manage Orders navigation
+            } else if (id == R.id.nav_order_now) {
+                Toast.makeText(getActivity(), "Order Now Selected", Toast.LENGTH_SHORT).show();
+                // Handle Order Now navigation
+            }
+
+            // Close the drawer after item selection
+            closeDrawer();
+            return true;
+        });
+
+        // Set up ArrayAdapter for Spinners
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
                 R.array.assignment_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        assspinner.setAdapter(adapter);
 
         ArrayAdapter<CharSequence> vivaadapter = ArrayAdapter.createFromResource(context,
                 R.array.viva, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Attach the adapter to the Spinner
-        assspinner.setAdapter(adapter);
-
+        vivaadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         vivaspinner.setAdapter(vivaadapter);
 
-        // Initialize Exact Deadline EditText
+        // Initialize other UI components
         etExactDeadline = view.findViewById(R.id.et_exact_deadline);
         btn_extra_small = view.findViewById(R.id.btn_extra_small);
         btn_small = view.findViewById(R.id.btn_small);
@@ -83,33 +129,24 @@ public class PlaceOrder extends Fragment {
         tv_possible_deliverables = view.findViewById(R.id.tv_possible_deliverables);
         fileNameTextView = view.findViewById(R.id.tv_file_name);
 
-        btn_extra_small.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tv_example.setText("Up to 3 short practice problems or theoretical questions");
-                tv_possible_deliverables.setText("• Simple computations\n• Short answers to questions");
-            }
+        btn_extra_small.setOnClickListener(v -> {
+            tv_example.setText("Up to 3 short practice problems or theoretical questions");
+            tv_possible_deliverables.setText("• Simple computations\n• Short answers to questions");
         });
-        btn_small.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tv_example.setText("Small assignment details");
-                tv_possible_deliverables.setText("• Detailed report\n• Extended calculations");
-            }
+
+        btn_small.setOnClickListener(v -> {
+            tv_example.setText("Small assignment details");
+            tv_possible_deliverables.setText("• Detailed report\n• Extended calculations");
         });
-        btn_medium.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tv_example.setText("Medium-sized project description");
-                tv_possible_deliverables.setText("• Project analysis\n• Complex diagrams");
-            }
+
+        btn_medium.setOnClickListener(v -> {
+            tv_example.setText("Medium-sized project description");
+            tv_possible_deliverables.setText("• Project analysis\n• Complex diagrams");
         });
-        btn_large.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                tv_example.setText( "Large project scope");
-                tv_possible_deliverables.setText("• Comprehensive report\n• Advanced analytics");
-            }
+
+        btn_large.setOnClickListener(v -> {
+            tv_example.setText("Large project scope");
+            tv_possible_deliverables.setText("• Comprehensive report\n• Advanced analytics");
         });
 
         btn_browse.setOnClickListener(v -> openFilePicker());
@@ -120,8 +157,19 @@ public class PlaceOrder extends Fragment {
         return view;
     }
 
+    private void openDrawer() {
+        if (drawerLayout != null) {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
+    }
+
+    private void closeDrawer() {
+        if (drawerLayout != null) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
     private void showDateTimePicker() {
-        // Get Current Date and Time
         Calendar calendar = Calendar.getInstance();
 
         // DatePickerDialog to select the date
@@ -130,7 +178,6 @@ public class PlaceOrder extends Fragment {
                     // Once the date is selected, show TimePickerDialog
                     TimePickerDialog timePickerDialog = new TimePickerDialog(context,
                             (timeView, hourOfDay, minute) -> {
-                                // Format and set the selected date and time in the EditText
                                 String formattedDateTime = String.format("%02d/%02d/%d %02d:%02d",
                                         dayOfMonth, month + 1, year, hourOfDay, minute);
                                 etExactDeadline.setText(formattedDateTime);
@@ -146,6 +193,7 @@ public class PlaceOrder extends Fragment {
 
         datePickerDialog.show();
     }
+
     private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*"); // Allows both images and PDFs
@@ -177,5 +225,4 @@ public class PlaceOrder extends Fragment {
         }
         return null;
     }
-
 }
