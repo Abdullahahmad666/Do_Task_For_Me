@@ -70,10 +70,7 @@ public class PlaceOrder extends Fragment {
         // Initialize Spinner
         assspinner = view.findViewById(R.id.spinner_assignment_type);
         vivaspinner = view.findViewById(R.id.spinner_viva_preparation);
-        if (savedInstanceState == null) {
-            loadFragment(new PlaceOrder());
-            navigationView.setCheckedItem(R.id.nav_order_now);
-        }
+
 
         // Initialize DrawerLayout and NavigationView
         drawerLayout = view.findViewById(R.id.draw_header);
@@ -87,31 +84,59 @@ public class PlaceOrder extends Fragment {
 
         // Set up the navigation item click listener
         navigationView.setNavigationItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
+
             int id = item.getItemId();
 
             if (id == R.id.nav_home) {
-                Toast.makeText(getActivity(), "Home Selected", Toast.LENGTH_SHORT).show();
-                selectedFragment = new HomeFragment();
+                HomeFragment HomeFragment = new HomeFragment();
+
+                // Use FragmentManager to replace the current fragment
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                       manager.beginTransaction()
+                        .replace(R.id.fragment_container, HomeFragment) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
+                        .commit();
             } else if (id == R.id.nav_how_we_work) {
-                Toast.makeText(getActivity(), "How We Work Selected", Toast.LENGTH_SHORT).show();
-                selectedFragment = new AboutUsFragment();
+                AboutUsFragment AboutusFragment = new AboutUsFragment();
+
+                // Use FragmentManager to replace the current fragment
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                manager.beginTransaction()
+                        .replace(R.id.fragment_container, AboutusFragment) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
+                        .commit();
             } else if (id == R.id.nav_services) {
-                Toast.makeText(getActivity(), "Services Selected", Toast.LENGTH_SHORT).show();
-                selectedFragment = new ServicesFragment();
+                ServicesFragment ServicesFragment = new ServicesFragment();
+
+                // Use FragmentManager to replace the current fragment
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                manager.beginTransaction()
+                        .replace(R.id.fragment_container, ServicesFragment) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
+                        .commit();
             } else if (id == R.id.nav_contact_us) {
-                Toast.makeText(getActivity(), "Contact Us Selected", Toast.LENGTH_SHORT).show();
-                selectedFragment = new ContactUsFragment();
+                ContactUsFragment ContactUsFragment = new ContactUsFragment();
+
+                // Use FragmentManager to replace the current fragment
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                manager.beginTransaction()
+                        .replace(R.id.fragment_container, ContactUsFragment) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
+                        .commit();
             } else if (id == R.id.nav_manage_orders) {
-                Toast.makeText(getActivity(), "Manage Orders Selected", Toast.LENGTH_SHORT).show();
-                selectedFragment = new ManageOrderFragment();
+                ManageOrderFragment ManageOrderFragment = new ManageOrderFragment();
+
+                // Use FragmentManager to replace the current fragment
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                manager.beginTransaction()
+                        .replace(R.id.fragment_container, ManageOrderFragment) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
+                        .commit();
             } else if (id == R.id.nav_order_now) {
                 Toast.makeText(getActivity(), "Order Now Selected", Toast.LENGTH_SHORT).show();
                 // Handle Order Now navigation
             }
-            if (selectedFragment != null) {
-                loadFragment(selectedFragment);
-            }
+
             // Close the drawer after item selection
             closeDrawer();
             return true;
@@ -180,13 +205,8 @@ public class PlaceOrder extends Fragment {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
     }
-    // Method to load fragments
-    private void loadFragment(Fragment fragment) {
-        manager = requireActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.commit();
-    }
+
+
 
     private void showDateTimePicker() {
         Calendar calendar = Calendar.getInstance();
