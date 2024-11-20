@@ -1,28 +1,42 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/home"
-        android:title="Home" />
+        android:title="Home"
+        app:iconTint="@color/white"
+        app:itemTextColor="@color/white"
+        />
     <item
         android:id="@+id/nav_how_we_work"
         android:icon="@drawable/assignment"
-        android:title="How we work" />
+        android:title="How we work"
+        app:iconTint="@color/white"
+        app:itemTextColor="@color/white"/>
     <item
         android:id="@+id/nav_services"
         android:icon="@drawable/services"
-        android:title="Services" />
+        android:title="Services"
+        app:iconTint="@color/white"
+        app:itemTextColor="@color/white"/>
     <item
         android:id="@+id/nav_contact_us"
         android:icon="@drawable/contact_us"
-        android:title="Contact Us" />
+        android:title="Contact Us"
+        app:iconTint="@color/white"
+        app:itemTextColor="@color/white"/>
 
     <!-- Buttons at the bottom -->
     <item
         android:id="@+id/nav_manage_orders"
         android:title="Manage Orders"
-        android:icon="@drawable/awesome" />
+        android:icon="@drawable/awesome"
+        app:iconTint="@color/white"
+        app:itemTextColor="@color/white"/>
     <item
         android:id="@+id/nav_order_now"
         android:title="Order Now"
-        android:icon="@drawable/projects_icon" />
+        android:icon="@drawable/projects_icon"
+        app:iconTint="@color/white"
+        app:itemTextColor="@color/white"/>
 </menu>

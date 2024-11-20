@@ -106,6 +106,8 @@ public class PlaceOrder extends Fragment {
             closeDrawer();
             return true;
         });
+        View headerView = navigationView.getHeaderView(0);
+        headerView.findViewById(R.id.close_button).setOnClickListener(v -> drawerLayout.closeDrawer(GravityCompat.START));
 
         // Set up ArrayAdapter for Spinners
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
