@@ -17,26 +17,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Image on the left -->
-        <ImageView
-            android:id="@+id/ivlogo"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="start|top"
-            android:src="@drawable/splashimage"
-            android:padding="16dp" />
-
         <!-- Icon on the right top of the screen -->
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|top"
+            android:layout_gravity="start|top"
             android:src="@drawable/drawer_icon"
-            android:background="@color/lightblue"
+            android:background="@color/blue"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:padding="16dp" />
+
+        <!-- Image on the left -->
+        <ImageView
+            android:id="@+id/ivlogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="end|top"
+            android:src="@drawable/splashimage"
+            android:padding="16dp" />
+
+
     </FrameLayout>
 
     <!-- ScrollView for content -->
