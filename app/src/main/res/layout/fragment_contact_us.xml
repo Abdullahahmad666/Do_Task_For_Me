@@ -1,14 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactUsFragment">
+    android:padding="16dp"
+    android:background="#f5f5f5">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_contact_us_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact Us"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:paddingBottom="8dp"
+            android:textColor="#000" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/tv_contact_us_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="We would love to hear from you! Please fill out the form below and we will get back to you as soon as possible."
+            android:textSize="16sp"
+            android:paddingBottom="16dp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#555" />
+
+        <!-- Name Input -->
+        <EditText
+            android:id="@+id/et_contact_us_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Your Name"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"
+            android:inputType="textPersonName"
+            android:textColor="#000"
+            android:textColorHint="#999" />
+
+        <!-- Email Input -->
+        <EditText
+            android:id="@+id/et_contact_us_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Your Email"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"
+            android:inputType="textEmailAddress"
+            android:textColor="#000"
+            android:textColorHint="#999" />
+
+        <!-- Message Input -->
+        <EditText
+            android:id="@+id/et_contact_us_message"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:hint="Your Message"
+            android:background="@android:drawable/editbox_background"
+            android:padding="12dp"
+            android:gravity="top"
+            android:layout_marginBottom="16dp"
+            android:inputType="textMultiLine"
+            android:textColor="#000"
+            android:textColorHint="#999" />
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/btn_submit_contact_us"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:backgroundTint="#6200EE"
+            android:textColor="#FFF"
+            android:padding="12dp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+</ScrollView>
