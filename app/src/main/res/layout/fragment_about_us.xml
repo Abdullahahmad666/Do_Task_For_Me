@@ -29,7 +29,7 @@
             android:id="@+id/iv_about_us_logo"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@drawable/splashimage"
             android:contentDescription="Company Logo"
             android:layout_marginBottom="16dp"
             android:scaleType="centerInside" />
