@@ -37,5 +37,9 @@
         <item>No</item>
         <item>Yes (15% increase in price) [We Will Contact You for Timing]</item>
     </string-array>
+    <string-array name="orderstatus">
+        <item>Pending</item>
+        <item>Completed</item>
+    </string-array>
 
 </resources>

@@ -105,7 +105,7 @@
                     android:id="@+id/sp_order_status_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:entries="@array/order_status_array"
+                    android:entries="@array/orderstatus"
                     android:layout_marginStart="8dp"
                     android:spinnerMode="dropdown"
                     tools:ignore="TextSize" />
