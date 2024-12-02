@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "940224446519",
+    "project_id": "dotaskforme-58f37",
+    "storage_bucket": "dotaskforme-58f37.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:940224446519:android:a15aac3b5d213eada2bfb2",
+        "android_client_info": {
+          "package_name": "com.example.dotaskforme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3jCGMwJhy_rXycUkdcM-4akB6nOFsVBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
