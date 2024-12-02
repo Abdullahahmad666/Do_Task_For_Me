@@ -78,15 +78,6 @@ public class ContactUsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btnback = view.findViewById(R.id.btn_back);
-        FragmentManager manager = getParentFragmentManager();
-        manager.beginTransaction()
-                .replace(R.id.fragment_container, new ContactUsFragment())
-                .addToBackStack(null) // Add this to enable back navigation
-                .commit();
 
-
-        btnback.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack();// This will take the user back to the previous activity or fragment
-        });
     }
 }
