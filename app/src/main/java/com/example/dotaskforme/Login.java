@@ -18,6 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -41,6 +45,7 @@ public class Login extends AppCompatActivity {
     FirebaseUser user;
     GoogleSignInClient signInClient;
     ImageView ivgoogle;
+    EditText etemail,etpassword;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,11 +77,64 @@ public class Login extends AppCompatActivity {
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(Login.this,MainActivity.class);
-                startActivity(i);
-                finish();
+                String email = etemail.getText().toString().trim();
+                String password = etpassword.getText().toString().trim();
+
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(Login.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ProgressDialog progressDialog = new ProgressDialog(Login.this);
+                progressDialog.setMessage("Logging in...");
+                progressDialog.show();
+
+                // Sign in with Firebase Authentication
+                auth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            progressDialog.dismiss();
+                            if (task.isSuccessful()) {
+                                // Get the current user's ID
+                                FirebaseUser user = auth.getCurrentUser();
+                                if (user != null) {
+                                    String uid = user.getUid();
+
+                                    // Fetch role from Firestore
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    db.collection("users")
+                                            .document(uid)
+                                            .get()
+                                            .addOnCompleteListener(roleTask -> {
+                                                if (roleTask.isSuccessful()) {
+                                                    DocumentSnapshot document = roleTask.getResult();
+                                                    if (document.exists()) {
+                                                        String role = document.getString("role");
+
+                                                        // Navigate based on role
+                                                        if ("Student".equals(role)) {
+                                                            // Navigate to HomeFragment
+                                                            navigateToFragment(new HomeFragment());
+                                                        } else if ("Admin".equals(role)) {
+                                                            // Navigate to ManageOrdersFragment
+                                                            navigateToFragment(new ManageOrderFragment());
+                                                        } else {
+                                                            Toast.makeText(Login.this, "Invalid role detected!", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    } else {
+                                                        Toast.makeText(Login.this, "Role not found for the user!", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } else {
+                                                    Toast.makeText(Login.this, "Failed to fetch role: " + roleTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                }
+                            } else {
+                                Toast.makeText(Login.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
+
         forgot_password.setOnClickListener(view -> {
             EditText etEmail = new EditText(view.getContext());
             AlertDialog.Builder forgetPasswordDialog = new AlertDialog.Builder(view.getContext())
@@ -116,6 +174,8 @@ public class Login extends AppCompatActivity {
         ivgoogle = findViewById(R.id.ivgoogle);
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        etemail = findViewById(R.id.etemail);
+        etpassword = findViewById(R.id.etpassword);
     }
     private void signInWithGoogle() {
         Intent signInIntent = signInClient.getSignInIntent();
@@ -140,32 +200,60 @@ public class Login extends AppCompatActivity {
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Get the Google account details
                         FirebaseUser user = auth.getCurrentUser();
                         if (user != null) {
-                            String userName = user.getDisplayName();
-                            String email = user.getEmail();
                             String uid = user.getUid();
 
-                            // Show role selection dialog
-                            showRoleSelectionDialog(userName, email, uid);
+                            // Fetch user role from Firestore
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            db.collection("users")
+                                    .document(uid)
+                                    .get()
+                                    .addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            DocumentSnapshot document = task1.getResult();
+                                            if (document.exists()) {
+                                                String role = document.getString("role");
+
+                                                if ("Student".equals(role)) {
+                                                    // Navigate to HomeFragment
+                                                    navigateToFragment(new HomeFragment());
+                                                } else if ("Admin".equals(role)) {
+                                                    // Navigate to AdminFragment
+                                                    navigateToFragment(new ManageOrderFragment());
+                                                } else {
+                                                    Toast.makeText(this, "Invalid role!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            } else {
+                                                Toast.makeText(this, "Role not found. Please select role.", Toast.LENGTH_SHORT).show();
+                                                showRoleSelectionDialog(user.getDisplayName(), user.getEmail(), uid);
+                                            }
+                                        } else {
+                                            Toast.makeText(this, "Failed to fetch role: " + task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                         }
                     } else {
                         Toast.makeText(this, "Authentication Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+    private void navigateToFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment); // Replace with your container ID
+        fragmentTransaction.commit();
+    }
+
+
     private void showRoleSelectionDialog(String userName, String email, String uid) {
-        // Create an AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Your Role");
 
-        // Add options for role selection
         String[] roles = {"Student", "Admin"};
         builder.setItems(roles, (dialog, which) -> {
             String selectedRole = roles[which];
 
-            // Store user data and role in Firestore
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             HashMap<String, Object> userData = new HashMap<>();
             userData.put("name", userName);
@@ -179,17 +267,19 @@ public class Login extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(this, "Role saved successfully!", Toast.LENGTH_SHORT).show();
 
-                            // Redirect to Login or Main Activity
-                            startActivity(new Intent(this, Login.class)); // Replace LoginActivity with your desired activity
-                            finish();
+                            // Navigate based on role
+                            if ("Student".equals(selectedRole)) {
+                                navigateToFragment(new HomeFragment());
+                            } else if ("Admin".equals(selectedRole)) {
+                                navigateToFragment(new ManageOrderFragment());
+                            }
                         } else {
                             Toast.makeText(this, "Error saving role: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
-        // Show the dialog
-        builder.setCancelable(false); // Prevent dialog dismissal without selecting a role
+        builder.setCancelable(false);
         builder.show();
     }
 
