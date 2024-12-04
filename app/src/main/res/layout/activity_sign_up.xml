@@ -139,6 +139,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:src="@drawable/google"
+            android:id="@+id/ivgoogle"
             android:contentDescription="@string/google_icon" />
     </LinearLayout>
 </ScrollView>

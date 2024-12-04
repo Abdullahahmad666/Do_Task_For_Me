@@ -132,7 +132,7 @@ public class Login extends AppCompatActivity {
 
     private void navigateBasedOnRole(String role) {
         if ("Student".equals(role)) {
-            navigateToFragment(new HomeFragment());
+            startActivity(new Intent(Login.this, MainActivity.class));
         } else if ("Admin".equals(role)) {
             navigateToFragment(new ManageOrderFragment());
         } else {
