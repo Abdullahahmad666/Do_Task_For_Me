@@ -1,5 +1,6 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -88,10 +89,12 @@
         <!-- Google Icon -->
         <ImageView
             android:layout_width="60dp"
+            android:id="@+id/ivgoogle"
             android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:src="@drawable/google"
-            android:contentDescription="@string/google_icon" />
+            android:contentDescription="@string/google_icon"
+            tools:ignore="InvalidId" />
     </LinearLayout>
 </ScrollView>
