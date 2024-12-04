@@ -31,258 +31,232 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
-    TextView gotosignup,forgot_password;
+
     private static final int RC_SIGN_IN = 100;
-    Button signin;
-    FirebaseAuth auth;
-    FirebaseUser user;
-    GoogleSignInClient signInClient;
-    ImageView ivgoogle;
-    EditText etemail,etpassword;
+
+    private TextView gotosignup, forgotPassword;
+    private Button signin;
+    private ImageView ivGoogle;
+    private EditText etEmail, etPassword;
+
+    private FirebaseAuth auth;
+    private GoogleSignInClient signInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        init();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.client_id)) // Use web client ID from google-services.json
-                .requestEmail()
-                .build();
 
-        signInClient = GoogleSignIn.getClient(this, gso);
+        initUI();
+        configureGoogleSignIn();
 
-        // Google Sign-In ImageView Click Listener
-        ivgoogle.setOnClickListener(view -> signInWithGoogle());
-        gotosignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(Login.this,SignUp.class);
-                startActivity(i);
-                finish();
-            }
-        });
-        signin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = etemail.getText().toString().trim();
-                String password = etpassword.getText().toString().trim();
-
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(Login.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                ProgressDialog progressDialog = new ProgressDialog(Login.this);
-                progressDialog.setMessage("Logging in...");
-                progressDialog.show();
-
-                // Sign in with Firebase Authentication
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(task -> {
-                            progressDialog.dismiss();
-                            if (task.isSuccessful()) {
-                                // Get the current user's ID
-                                FirebaseUser user = auth.getCurrentUser();
-                                if (user != null) {
-                                    String uid = user.getUid();
-
-                                    // Fetch role from Firestore
-                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                    db.collection("users")
-                                            .document(uid)
-                                            .get()
-                                            .addOnCompleteListener(roleTask -> {
-                                                if (roleTask.isSuccessful()) {
-                                                    DocumentSnapshot document = roleTask.getResult();
-                                                    if (document.exists()) {
-                                                        String role = document.getString("role");
-
-                                                        // Navigate based on role
-                                                        if ("Student".equals(role)) {
-                                                            // Navigate to HomeFragment
-                                                            navigateToFragment(new HomeFragment());
-                                                        } else if ("Admin".equals(role)) {
-                                                            // Navigate to ManageOrdersFragment
-                                                            navigateToFragment(new ManageOrderFragment());
-                                                        } else {
-                                                            Toast.makeText(Login.this, "Invalid role detected!", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    } else {
-                                                        Toast.makeText(Login.this, "Role not found for the user!", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                } else {
-                                                    Toast.makeText(Login.this, "Failed to fetch role: " + roleTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
-                                }
-                            } else {
-                                Toast.makeText(Login.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-            }
-        });
-
-        forgot_password.setOnClickListener(view -> {
-            EditText etEmail = new EditText(view.getContext());
-            AlertDialog.Builder forgetPasswordDialog = new AlertDialog.Builder(view.getContext())
-                    .setTitle("Forget Password Email...")
-                    .setView(etEmail)
-                    .setPositiveButton("Send", (dialogInterface, i) -> {
-                        String email = etEmail.getText().toString().trim();
-                        if(TextUtils.isEmpty(email)) {
-                            etEmail.setError("Give valid email address");
-                        }
-                        else
-                        {
-                            ProgressDialog progressDialog = new ProgressDialog(Login.this);
-                            progressDialog.show();
-                            auth.sendPasswordResetEmail(email)
-                                    .addOnCompleteListener(task -> {
-                                        if(task.isSuccessful()) {
-                                            Toast.makeText(Login.this, "Check your inbox...", Toast.LENGTH_SHORT).show();
-                                        }
-                                        else
-                                        {
-                                            Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                        progressDialog.dismiss();
-                                    });
-                        }
-                    })
-                    .setNegativeButton("Cancel", null);
-            forgetPasswordDialog.show();
-        });
+        ivGoogle.setOnClickListener(view -> signInWithGoogle());
+        gotosignup.setOnClickListener(view -> navigateToSignUp());
+        signin.setOnClickListener(view -> handleEmailSignIn());
+        forgotPassword.setOnClickListener(view -> showForgotPasswordDialog());
     }
-    public void init()
-    {
+
+    // Initialize UI components
+    private void initUI() {
         gotosignup = findViewById(R.id.gotosignup);
         signin = findViewById(R.id.loginbtn);
-        forgot_password = findViewById(R.id.forgot_password);
-        ivgoogle = findViewById(R.id.ivgoogle);
+        forgotPassword = findViewById(R.id.forgot_password);
+        ivGoogle = findViewById(R.id.ivgoogle);
+        etEmail = findViewById(R.id.etemail);
+        etPassword = findViewById(R.id.etpassword);
         auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        etemail = findViewById(R.id.etemail);
-        etpassword = findViewById(R.id.etpassword);
     }
+
+    // Configure Google Sign-In options
+    private void configureGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.client_id)) // Web client ID from google-services.json
+                .requestEmail()
+                .build();
+        signInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+    // Handle email/password sign-in
+    private void handleEmailSignIn() {
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            showToast("Please enter email and password");
+            return;
+        }
+
+        ProgressDialog progressDialog = showProgressDialog("Logging in...");
+        auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        fetchUserRoleAndNavigate(auth.getCurrentUser());
+                    } else {
+                        showToast("Login failed: " + task.getException().getMessage());
+                    }
+                });
+    }
+
+    // Start Google Sign-In process
     private void signInWithGoogle() {
         Intent signInIntent = signInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
             try {
                 GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
+                authenticateWithGoogle(account);
             } catch (ApiException e) {
                 Log.e("GoogleSignIn", "Google sign-in failed", e);
-                Toast.makeText(this, "Google Sign-In failed", Toast.LENGTH_SHORT).show();
+                showToast("Google Sign-In failed");
             }
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+    // Authenticate with Google and fetch role
+    private void authenticateWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUser user = auth.getCurrentUser();
-                        if (user != null) {
-                            String uid = user.getUid();
-
-                            // Fetch user role from Firestore
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            db.collection("users")
-                                    .document(uid)
-                                    .get()
-                                    .addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            DocumentSnapshot document = task1.getResult();
-                                            if (document.exists()) {
-                                                String role = document.getString("role");
-
-                                                if ("Student".equals(role)) {
-                                                    // Navigate to HomeFragment
-                                                    navigateToFragment(new HomeFragment());
-                                                } else if ("Admin".equals(role)) {
-                                                    // Navigate to AdminFragment
-                                                    navigateToFragment(new ManageOrderFragment());
-                                                } else {
-                                                    Toast.makeText(this, "Invalid role!", Toast.LENGTH_SHORT).show();
-                                                }
-                                            } else {
-                                                Toast.makeText(this, "Role not found. Please select role.", Toast.LENGTH_SHORT).show();
-                                                showRoleSelectionDialog(user.getDisplayName(), user.getEmail(), uid);
-                                            }
-                                        } else {
-                                            Toast.makeText(this, "Failed to fetch role: " + task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        }
+                        fetchUserRoleAndNavigate(auth.getCurrentUser());
                     } else {
-                        Toast.makeText(this, "Authentication Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        showToast("Authentication failed: " + task.getException().getMessage());
                     }
                 });
     }
-    private void navigateToFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment); // Replace with your container ID
-        fragmentTransaction.commit();
-    }
 
+    // Fetch user role from Firestore and navigate accordingly
+    private void fetchUserRoleAndNavigate(FirebaseUser user) {
+        if (user == null) return;
 
-    private void showRoleSelectionDialog(String userName, String email, String uid) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select Your Role");
-
-        String[] roles = {"Student", "Admin"};
-        builder.setItems(roles, (dialog, which) -> {
-            String selectedRole = roles[which];
-
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            HashMap<String, Object> userData = new HashMap<>();
-            userData.put("name", userName);
-            userData.put("email", email);
-            userData.put("role", selectedRole);
-
-            db.collection("users")
-                    .document(uid)
-                    .set(userData)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(this, "Role saved successfully!", Toast.LENGTH_SHORT).show();
-
-                            // Navigate based on role
-                            if ("Student".equals(selectedRole)) {
-                                navigateToFragment(new HomeFragment());
-                            } else if ("Admin".equals(selectedRole)) {
-                                navigateToFragment(new ManageOrderFragment());
-                            }
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+                .document(user.getUid())
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            String role = document.getString("role");
+                            navigateBasedOnRole(role);
                         } else {
-                            Toast.makeText(this, "Error saving role: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            showRoleSelectionDialog(user.getDisplayName(), user.getEmail(), user.getUid());
                         }
-                    });
-        });
-
-        builder.setCancelable(false);
-        builder.show();
+                    } else {
+                        showToast("Failed to fetch role: " + task.getException().getMessage());
+                    }
+                });
     }
 
+    // Navigate to appropriate fragment based on role
+    private void navigateBasedOnRole(String role) {
+        if ("Student".equals(role)) {
+            navigateToFragment(new HomeFragment());
+        } else if ("Admin".equals(role)) {
+            navigateToFragment(new ManageOrderFragment());
+        } else {
+            showToast("Invalid role detected!");
+        }
+    }
 
+    // Show role selection dialog
+    private void showRoleSelectionDialog(String userName, String email, String uid) {
+        String[] roles = {"Student", "Admin"};
+        new AlertDialog.Builder(this)
+                .setTitle("Select Your Role")
+                .setItems(roles, (dialog, which) -> saveUserRoleAndNavigate(userName, email, uid, roles[which]))
+                .setCancelable(false)
+                .show();
+    }
 
+    // Save user role to Firestore and navigate
+    private void saveUserRoleAndNavigate(String userName, String email, String uid, String role) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        HashMap<String, Object> userData = new HashMap<>();
+        userData.put("name", userName);
+        userData.put("email", email);
+        userData.put("role", role);
+
+        db.collection("users")
+                .document(uid)
+                .set(userData)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        showToast("Role saved successfully!");
+                        navigateBasedOnRole(role);
+                    } else {
+                        showToast("Error saving role: " + task.getException().getMessage());
+                    }
+                });
+    }
+
+    // Navigate to a specific fragment
+    private void navigateToFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment); // Use your fragment container ID
+        transaction.commit();
+    }
+
+    // Show forgot password dialog
+    private void showForgotPasswordDialog() {
+        EditText etEmail = new EditText(this);
+        new AlertDialog.Builder(this)
+                .setTitle("Forgot Password?")
+                .setView(etEmail)
+                .setPositiveButton("Send", (dialog, which) -> sendPasswordResetEmail(etEmail.getText().toString().trim()))
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    // Send password reset email
+    private void sendPasswordResetEmail(String email) {
+        if (TextUtils.isEmpty(email)) {
+            showToast("Please provide a valid email address");
+            return;
+        }
+
+        ProgressDialog progressDialog = showProgressDialog("Sending password reset email...");
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        showToast("Check your inbox for reset instructions.");
+                    } else {
+                        showToast("Error: " + task.getException().getMessage());
+                    }
+                });
+    }
+
+    // Show a toast message
+    private void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    // Show a progress dialog
+    private ProgressDialog showProgressDialog(String message) {
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(message);
+        progressDialog.show();
+        return progressDialog;
+    }
+
+    // Navigate to the SignUp activity
+    private void navigateToSignUp() {
+        startActivity(new Intent(this, SignUp.class));
+        finish();
+    }
 }
