@@ -42,6 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/first_name"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:layout_marginTop="30dp"
             android:id="@+id/etfirst"/>
 
@@ -51,6 +53,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/last_name"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:id="@+id/etlast"/>
 
         <!-- Email Input -->
@@ -59,6 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/email"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:inputType="textEmailAddress"
             android:id="@+id/etemail"/>
 
@@ -68,6 +74,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/password"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:inputType="textPassword"
             android:id="@+id/etpassword"/>
 
@@ -77,6 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/confirm_password"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:inputType="textPassword"
             android:id="@+id/etconfirm"/>
         <RadioGroup
@@ -91,12 +101,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/student"
+                android:textColor="@color/black"
                 android:layout_marginEnd="16dp" />
 
             <RadioButton
                 android:id="@+id/rb_admin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:text="@string/admin" />
         </RadioGroup>
 

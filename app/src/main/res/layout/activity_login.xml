@@ -43,6 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/email"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:inputType="textEmailAddress"
             android:id="@+id/etemail" />
 
@@ -52,6 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="@string/password"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
             android:inputType="textPassword"
             android:id="@+id/etpassword" />
 
