@@ -42,5 +42,6 @@
         <item>Pending</item>
         <item>Completed</item>
     </string-array>
+    <string name="client_id">940224446519-hcs1d7g69fi9c2h1omi48j2vsluhhhnp.apps.googleusercontent.com</string>
 
 </resources>

@@ -37,8 +37,6 @@ public class Login extends AppCompatActivity {
             return insets;
         });
         init();
-
-
         gotosignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,14 +62,18 @@ public class Login extends AppCompatActivity {
                         String email = etEmail.getText().toString().trim();
                         if(TextUtils.isEmpty(email)) {
                             etEmail.setError("Give valid email address");
-                        } else {
+                        }
+                        else
+                        {
                             ProgressDialog progressDialog = new ProgressDialog(Login.this);
                             progressDialog.show();
                             auth.sendPasswordResetEmail(email)
                                     .addOnCompleteListener(task -> {
                                         if(task.isSuccessful()) {
                                             Toast.makeText(Login.this, "Check your inbox...", Toast.LENGTH_SHORT).show();
-                                        } else {
+                                        }
+                                        else
+                                        {
                                             Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                         progressDialog.dismiss();

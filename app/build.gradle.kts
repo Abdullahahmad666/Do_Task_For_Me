@@ -64,4 +64,6 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.firebase.ui.database)
+    implementation (libs.glide)
+    implementation(libs.play.services.auth)
 }
