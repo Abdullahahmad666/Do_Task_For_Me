@@ -17,6 +17,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="student">Student</string>
     <string name="admin">Admin</string>
+    <string name="forget_password">Forget Password?</string>
     <string-array name="assignment_types">
         <item>Select Assignment Type</item>
         <item>English Writing Based Assignments</item>
