@@ -112,6 +112,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="16dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/btnQuickAssistance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/llvertical"
+            tools:ignore="MissingConstraints">
+
         <!-- Mathematics Assignments Banner -->
         <LinearLayout
             android:id="@+id/banner"
@@ -120,10 +130,11 @@
             android:background="@color/lightblue"
             android:orientation="horizontal"
             android:padding="28dp"
-            app:layout_constraintTop_toBottomOf="@id/btnQuickAssistance"
+            app:layout_constraintTop_toBottomOf="@id/llvertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="50dp"
+            tools:ignore="DuplicateIds">
 
             <!-- Spark Icon -->
             <ImageView
@@ -145,6 +156,186 @@
                 android:fontFamily="sans-serif-medium"
                 android:layout_gravity="center_vertical" />
         </LinearLayout>
+            <!-- Mathematics Assignments Banner -->
+            <LinearLayout
+                android:id="@+id/banner5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightblue"
+                android:orientation="horizontal"
+                android:padding="28dp"
+                app:layout_constraintTop_toBottomOf="@id/btnQuickAssistance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- Spark Icon -->
+                <ImageView
+                    android:id="@+id/sparkIcon5"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/awesome"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Banner Text -->
+                <TextView
+                    android:id="@+id/bannerText5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Science Assignments"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+            <!-- Mathematics Assignments Banner -->
+            <LinearLayout
+                android:id="@+id/banner4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightblue"
+                android:orientation="horizontal"
+                android:padding="28dp"
+                app:layout_constraintTop_toBottomOf="@id/btnQuickAssistance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- Spark Icon -->
+                <ImageView
+                    android:id="@+id/sparkIcon4"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/awesome"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Banner Text -->
+                <TextView
+                    android:id="@+id/bannerText4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Physics Assignments"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+            <!-- Mathematics Assignments Banner -->
+            <LinearLayout
+                android:id="@+id/banner3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightblue"
+                android:orientation="horizontal"
+                android:padding="28dp"
+                app:layout_constraintTop_toBottomOf="@id/btnQuickAssistance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- Spark Icon -->
+                <ImageView
+                    android:id="@+id/sparkIcon3"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/awesome"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Banner Text -->
+                <TextView
+                    android:id="@+id/bannerText3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FYP Assignments"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+            <!-- Mathematics Assignments Banner -->
+            <LinearLayout
+                android:id="@+id/banner2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightblue"
+                android:orientation="horizontal"
+                android:padding="28dp"
+                app:layout_constraintTop_toBottomOf="@id/btnQuickAssistance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+               >
+
+                <!-- Spark Icon -->
+                <ImageView
+                    android:id="@+id/sparkIcon2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/awesome"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Banner Text -->
+                <TextView
+                    android:id="@+id/bannerText2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Report Analysis Assignments"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+            <!-- Mathematics Assignments Banner -->
+            <LinearLayout
+                android:id="@+id/banner1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lightblue"
+                android:orientation="horizontal"
+                android:padding="28dp"
+                app:layout_constraintTop_toBottomOf="@id/btnQuickAssistance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+                <!-- Spark Icon -->
+                <ImageView
+                    android:id="@+id/sparkIcon1"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/awesome"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp" />
+
+                <!-- Banner Text -->
+                <TextView
+                    android:id="@+id/bannerText1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chemistry Assignments"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/do_task_for_me"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="26sp"
+            app:layout_constraintTop_toBottomOf="@id/llvertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
