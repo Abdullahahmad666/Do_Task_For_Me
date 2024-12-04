@@ -22,7 +22,7 @@ import android.widget.TextView;
 public class HomeFragment extends Fragment {
     ImageView iv_icon;
     Context context;
-    Button completeassignmnent;
+    Button completeassignmnent,getquickassistance;
     FragmentManager manager;
     private DrawerListener drawerListener;
 
@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment {
         tvbanner.startAnimation(textAnimation);
 
         completeassignmnent = view.findViewById(R.id.btnCompleteAssignment);
+        getquickassistance = view.findViewById(R.id.btnQuickAssistance);
         completeassignmnent.setOnClickListener(view1 -> {
 
             PlaceOrder placeOrderFragment = new PlaceOrder();
@@ -75,6 +76,17 @@ public class HomeFragment extends Fragment {
                     .addToBackStack(null) // Adds the transaction to the back stack so you can navigate back
                     .commit();// Close the current Activity hosting the Fragment, if needed
 
+        });
+        getquickassistance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ContactUsFragment contactus = new ContactUsFragment();
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, contactus) // R.id.fragment_container is the container where your fragments are hosted
+                        .addToBackStack(null) // Adds the transaction to the back stack so you can navigate back
+                        .commit();
+            }
         });
     }
 
