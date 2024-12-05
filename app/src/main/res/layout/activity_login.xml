@@ -97,15 +97,6 @@
             android:textColor="#000000"
             android:id="@+id/gotosignup" />
 
-        <!-- Google Icon -->
-        <ImageView
-            android:layout_width="60dp"
-            android:id="@+id/ivgoogle"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/google"
-            android:contentDescription="@string/google_icon"
-            tools:ignore="InvalidId" />
+
     </LinearLayout>
 </ScrollView>
