@@ -29,6 +29,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,7 +39,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 public class SignUp extends AppCompatActivity {
-    TextView gotosignin,etemail,etpassword,etconfirmpassword,etfirst,etlast;
+    TextView gotosignin;
+    TextInputEditText etemail,etpassword,etconfirmpassword,etfirst,etlast;
     ImageView ivbackarrow,ivgoogle;
     Button btnsignup;
     RadioGroup rgoption;
