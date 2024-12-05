@@ -1,5 +1,6 @@
 package com.example.dotaskforme;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -68,7 +69,12 @@ public class ManageOrderFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ProgressDialog progressDialog;
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setMessage("Log Out...");
+                progressDialog.show();
                 auth.signOut();
+                progressDialog.dismiss();
                 Intent i = new Intent(getActivity(), Login.class);
                 startActivity(i);
                 if (getActivity() != null) {

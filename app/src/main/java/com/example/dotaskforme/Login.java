@@ -115,6 +115,7 @@ public class Login extends AppCompatActivity {
                             etEmail.setError("Give valid email address");
                         } else {
                             ProgressDialog progressDialog = new ProgressDialog(Login.this);
+                            progressDialog.setMessage("Sending Email...");
                             progressDialog.show();
                             auth.sendPasswordResetEmail(email)
                                     .addOnCompleteListener(task -> {
