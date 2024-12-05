@@ -14,10 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 
 public class ManageOrderFragment extends Fragment {
     Context context;
     TextView order_now,logout;
+    FirebaseAuth auth;
 
     public ManageOrderFragment() {
         // Required empty public constructor
@@ -47,6 +50,7 @@ public class ManageOrderFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         order_now = view.findViewById(R.id.order_now);
         logout = view.findViewById(R.id.logout);
+        auth = FirebaseAuth.getInstance();
 
         order_now.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +68,7 @@ public class ManageOrderFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                auth.signOut();
                 Intent i = new Intent(getActivity(), Login.class);
                 startActivity(i);
                 if (getActivity() != null) {

@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Draw
 
     private DrawerLayout drawerLayout;
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,17 +28,22 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Draw
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navigation_view);
 
-        // Set the default fragment to HomeFragment
+        String targetFragment = getIntent().getStringExtra("targetFragment");
+
+        // Load the appropriate fragment
         if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
-            navigationView.setCheckedItem(R.id.nav_home);
+            if ("ManageOrderFragment".equals(targetFragment)) {
+                loadFragment(new ManageOrderFragment());
+                navigationView.setCheckedItem(R.id.nav_manage_orders);
+            } else {
+                loadFragment(new HomeFragment());
+                navigationView.setCheckedItem(R.id.nav_home);
+            }
         }
 
-        // Handle navigation item clicks
         navigationView.setNavigationItemSelectedListener(item -> {
             Fragment selectedFragment = null;
-
-            int id = item.getItemId(); // Get the clicked item's ID
+            int id = item.getItemId();
 
             if (id == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
@@ -52,23 +56,9 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Draw
             } else if (id == R.id.nav_contact_us) {
                 selectedFragment = new ContactUsFragment();
             } else if (id == R.id.nav_login) {
-                ManageOrderFragment ManageOrderFragment = new ManageOrderFragment();
-
-                // Use FragmentManager to replace the current fragment
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, ManageOrderFragment) // fragment_container is your container ID
-                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
-                        .commit();
+                loadFragment(new ManageOrderFragment());
             } else if (id == R.id.nav_assignment) {
-                PlaceOrder placeOrderFragment = new PlaceOrder();
-
-                // Use FragmentManager to replace the current fragment
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, placeOrderFragment) // fragment_container is your container ID
-                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
-                        .commit();
+                loadFragment(new PlaceOrder());
             }
 
             if (selectedFragment != null) {
@@ -78,24 +68,37 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Draw
             return true;
         });
 
-
         // Handle close button in the header
         View headerView = navigationView.getHeaderView(0);
         headerView.findViewById(R.id.close_button).setOnClickListener(v -> drawerLayout.closeDrawer(GravityCompat.START));
     }
 
-    // Method to load fragments
     private void loadFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.commit();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
     }
+
+    private void synchronizeDrawer(String targetFragment) {
+        NavigationView navigationView = findViewById(R.id.navigation_view);
+
+        if (navigationView == null) {
+            throw new IllegalStateException("NavigationView is null. Check your layout.");
+        }
+
+        if ("ManageOrderFragment".equals(targetFragment)) {
+            navigationView.setCheckedItem(R.id.nav_manage_orders);
+        } else if ("HomeFragment".equals(targetFragment)) {
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+    }
+
+    @Override
     public void openDrawer() {
         if (drawerLayout != null) {
             drawerLayout.openDrawer(GravityCompat.START);
         }
-
-
-
     }
 }
+

@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -23,7 +25,7 @@ public class Login extends AppCompatActivity {
     TextView gotosignup, forgot_password;
     Button signin;
     FirebaseAuth auth;
-    EditText etemail, etpassword;
+   TextInputEditText etemail, etpassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,14 +133,20 @@ public class Login extends AppCompatActivity {
     }
 
     private void navigateBasedOnRole(String role) {
+        Intent intent = new Intent(Login.this, MainActivity.class);
+
         if ("Student".equals(role)) {
-            startActivity(new Intent(Login.this, MainActivity.class));
+            intent.putExtra("targetFragment", "HomeFragment"); // Example fragment for Student
         } else if ("Admin".equals(role)) {
-            navigateToFragment(new ManageOrderFragment());
+            intent.putExtra("targetFragment", "ManageOrderFragment");
         } else {
             Toast.makeText(Login.this, "Invalid role detected!", Toast.LENGTH_SHORT).show();
+            return; // Exit early if the role is invalid
         }
+
+        startActivity(intent);
     }
+
 
     public void init() {
         gotosignup = findViewById(R.id.gotosignup);
