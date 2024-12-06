@@ -13,37 +13,37 @@
         <!-- First Image -->
         <ImageView
             android:id="@+id/image1"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
             android:src="@drawable/meet"
-            app:layout_constraintEnd_toStartOf="@+id/image2"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Second Image -->
         <ImageView
             android:id="@+id/image2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
             android:src="@drawable/splashimage"
-            app:layout_constraintStart_toEndOf="@+id/image1"
-            app:layout_constraintEnd_toStartOf="@+id/image3"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/image1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- Third Image -->
         <ImageView
             android:id="@+id/image3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
             android:src="@drawable/meet"
-            app:layout_constraintStart_toEndOf="@+id/image2"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/image2"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <!-- "About Company" Text -->
@@ -56,7 +56,21 @@
             android:textColor="#4FC3F7"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/image1"
+            app:layout_constraintTop_toBottomOf="@+id/image3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Large Bold Text -->
+        <TextView
+            android:id="@+id/mainTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Complete your institute assignment with 0% Plagiarism."
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/aboutCompany"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -66,10 +80,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Complete your institute assignment with 0% Plagiarism.\n\nCreative solutions to improve your grades involve identifying unique and innovative strategies that can enhance your assignments, tasks, and projects. The Goal is to find ways to differentiate your assignments from competitors."
+            android:text="Creative solutions to improve your grades involve identifying unique and innovative strategies that can enhance your assignments, tasks, and projects. The goal is to find ways to differentiate your assignments from competitors."
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/aboutCompany"
+            app:layout_constraintTop_toBottomOf="@+id/mainTitle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
