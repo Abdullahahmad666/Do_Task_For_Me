@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="#f5f5f5">
+    android:background="@color/blue">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,8 +37,9 @@
                 android:text="Contact Us"
                 android:textSize="24sp"
                 android:textStyle="bold"
+                android:textColorHighlight="@color/white"
                 android:layout_gravity="center"
-                android:textColor="#000" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -51,7 +52,7 @@
             android:textSize="16sp"
             android:paddingBottom="16dp"
             android:lineSpacingExtra="4dp"
-            android:textColor="#555" />
+            android:textColor="@color/white" />
 
         <!-- Name Input -->
         <EditText
@@ -99,7 +100,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:backgroundTint="#6200EE"
+            android:backgroundTint="@color/lightblue"
             android:textColor="#FFF"
             android:padding="12dp"
             android:textStyle="bold"
