@@ -43,5 +43,7 @@
         <item>Completed</item>
     </string-array>
     <string name="client_id">940224446519-hcs1d7g69fi9c2h1omi48j2vsluhhhnp.apps.googleusercontent.com</string>
+    <string name="complete_your_institute_assignment_with_0_plagiarism">Complete your institute assignment with 0% Plagiarism.</string>
+    <string name="info">Creative solutions to improve your grades involve identifying unique and innovative strategies that can enhance your assignments, tasks, and projects. The goal is to find ways to differentiate your assignments from competitors.</string>
 
 </resources>
