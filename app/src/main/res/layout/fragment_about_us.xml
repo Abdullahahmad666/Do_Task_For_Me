@@ -17,7 +17,7 @@
             android:layout_height="150dp"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/meet"
+            android:src="@drawable/meet11"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -29,7 +29,7 @@
             android:layout_height="150dp"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/splashimage"
+            android:src="@drawable/meet12"
             app:layout_constraintTop_toBottomOf="@id/image1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -41,7 +41,7 @@
             android:layout_height="150dp"
             android:layout_margin="8dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/meet"
+            android:src="@drawable/meet13"
             app:layout_constraintTop_toBottomOf="@id/image2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -56,6 +56,7 @@
             android:textColor="#4FC3F7"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:drawableStart="@drawable/awesome"
             app:layout_constraintTop_toBottomOf="@+id/image3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
