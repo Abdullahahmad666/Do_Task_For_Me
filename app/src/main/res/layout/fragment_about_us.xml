@@ -1,73 +1,91 @@
-<?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="#f5f5f5">
+    android:background="@color/blue">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:padding="16dp">
 
-        <!-- Title -->
+        <!-- First Image -->
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meet"
+            app:layout_constraintEnd_toStartOf="@+id/image2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- Second Image -->
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/splashimage"
+            app:layout_constraintStart_toEndOf="@+id/image1"
+            app:layout_constraintEnd_toStartOf="@+id/image3"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Third Image -->
+        <ImageView
+            android:id="@+id/image3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/meet"
+            app:layout_constraintStart_toEndOf="@+id/image2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- "About Company" Text -->
         <TextView
-            android:id="@+id/tv_about_us_title"
+            android:id="@+id/aboutCompany"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="About Us"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:paddingBottom="16dp"
-            android:textColor="#000" />
-
-        <!-- Image/Logo -->
-        <ImageView
-            android:id="@+id/iv_about_us_logo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/splashimage"
-            android:contentDescription="Company Logo"
-            android:layout_marginBottom="16dp"
-            android:scaleType="centerInside" />
-
-        <!-- Description -->
-        <TextView
-            android:id="@+id/tv_about_us_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="We are dedicated to providing the best service to our customers. Our mission is to make life easier through innovative solutions and exceptional customer support."
-            android:textSize="16sp"
-            android:lineSpacingExtra="4dp"
-            android:paddingBottom="16dp"
-            android:textColor="#555" />
-
-        <!-- Mission Statement -->
-        <TextView
-            android:id="@+id/tv_about_us_mission"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mission: To revolutionize how people interact with technology by creating products that inspire, empower, and bring convenience to everyday life."
-            android:textSize="16sp"
-            android:lineSpacingExtra="4dp"
-            android:paddingBottom="16dp"
-            android:textStyle="italic"
-            android:textColor="#555" />
-
-        <!-- Contact Info -->
-        <TextView
-            android:id="@+id/tv_about_us_contact_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Contact us: support@example.com"
+            android:layout_marginTop="16dp"
+            android:text="ABOUT COMPANY"
+            android:textColor="#4FC3F7"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:paddingTop="16dp"
-            android:textColor="#000"
-            android:gravity="center" />
+            app:layout_constraintTop_toBottomOf="@+id/image1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+        <!-- Main Text -->
+        <TextView
+            android:id="@+id/mainText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Complete your institute assignment with 0% Plagiarism.\n\nCreative solutions to improve your grades involve identifying unique and innovative strategies that can enhance your assignments, tasks, and projects. The Goal is to find ways to differentiate your assignments from competitors."
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/aboutCompany"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Button -->
+        <Button
+            android:id="@+id/completeAssignmentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/lightblue"
+            android:text="Complete Your Assignment"
+            android:textColor="#FFFFFF"
+            android:drawableEnd="@drawable/arrow_up"
+            app:layout_constraintTop_toBottomOf="@+id/mainText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
