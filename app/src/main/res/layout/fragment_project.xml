@@ -149,7 +149,7 @@
                 android:id="@+id/yearsExperienceLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Years Experience"
+                android:text="Years of Experience"
                 android:textSize="14sp"
                 android:textColor="#FFFFFF"
                 app:layout_constraintTop_toBottomOf="@id/yearsExperience"
