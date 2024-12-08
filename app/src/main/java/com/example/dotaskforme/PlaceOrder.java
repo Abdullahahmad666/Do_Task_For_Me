@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -51,6 +52,7 @@ public class PlaceOrder extends Fragment {
     private ImageView ivmenu;
     FragmentManager manager;
     private Button btnSubmit;
+    private Button selectedButton = null;
 
     public PlaceOrder() {
         // Required empty public constructor
@@ -174,25 +176,47 @@ public class PlaceOrder extends Fragment {
         tv_possible_deliverables = view.findViewById(R.id.tv_possible_deliverables);
         fileNameTextView = view.findViewById(R.id.tv_file_name);
 
+        // Button click listeners with inline tracking
         btn_extra_small.setOnClickListener(v -> {
+            if (selectedButton != null) {
+                selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.blue)); // Reset previous button color
+            }
+            selectedButton = btn_extra_small; // Update selected button
+            selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.lightblue)); // Highlight selected button
             tv_example.setText("Up to 3 short practice problems or theoretical questions");
             tv_possible_deliverables.setText("• Simple computations\n• Short answers to questions");
         });
 
         btn_small.setOnClickListener(v -> {
+            if (selectedButton != null) {
+                selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.blue));
+            }
+            selectedButton = btn_small;
+            selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.lightblue));
             tv_example.setText("Small assignment details");
             tv_possible_deliverables.setText("• Detailed report\n• Extended calculations");
         });
 
         btn_medium.setOnClickListener(v -> {
+            if (selectedButton != null) {
+                selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.blue));
+            }
+            selectedButton = btn_medium;
+            selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.lightblue));
             tv_example.setText("Medium-sized project description");
             tv_possible_deliverables.setText("• Project analysis\n• Complex diagrams");
         });
 
         btn_large.setOnClickListener(v -> {
+            if (selectedButton != null) {
+                selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.blue));
+            }
+            selectedButton = btn_large;
+            selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.lightblue));
             tv_example.setText("Large project scope");
             tv_possible_deliverables.setText("• Comprehensive report\n• Advanced analytics");
         });
+
 
         btn_browse.setOnClickListener(v -> openFilePicker());
 
