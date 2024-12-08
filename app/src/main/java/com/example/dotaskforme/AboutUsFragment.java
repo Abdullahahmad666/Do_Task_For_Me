@@ -54,8 +54,9 @@ public class AboutUsFragment extends Fragment {
         image2 = view.findViewById(R.id.image2);
         image3 = view.findViewById(R.id.image3);
         Animation textAnimation = AnimationUtils.loadAnimation(context, R.anim.text_animation);
+        Animation logoAnimation = AnimationUtils.loadAnimation(context, R.anim.logo_animation);
         image1.startAnimation(textAnimation);
-        image2.startAnimation(textAnimation);
+        image2.startAnimation(logoAnimation);
         image3.startAnimation(textAnimation);
         completeassignmnetbutton = view.findViewById(R.id.completeAssignmentButton);
         completeassignmnetbutton.setOnClickListener(new View.OnClickListener() {
