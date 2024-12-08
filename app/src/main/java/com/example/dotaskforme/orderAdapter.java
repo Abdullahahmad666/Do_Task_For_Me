@@ -1,6 +1,7 @@
 package com.example.dotaskforme;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,23 +43,27 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
         return new OrderViewHolder(view);
     }
 
-    // Bind data to the views
-    @Override
+
+    @Override    // Bin
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         Order order = orders.get(position);
 
         holder.orderTitle.setText(order.getTitle());
         holder.orderTime.setText("Order Time: " + order.getTime());
 
-        String[] statusOptions = {"Pending", "Completed", "Cancelled"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                holder.orderStatusSpinner.getContext(),
-                android.R.layout.simple_spinner_item,
-                statusOptions
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        holder.orderStatusSpinner.setAdapter(adapter);
+        // Set the adapter only once to avoid re-initializing it every time
+        if (holder.orderStatusSpinner.getAdapter() == null) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    holder.orderStatusSpinner.getContext(),
+                    android.R.layout.simple_spinner_item,
+                    new String[]{"Pending", "Completed", "Cancelled"}
+            );
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            holder.orderStatusSpinner.setAdapter(adapter);
+        }
 
+        // Set the correct spinner selection based on order status
+        String[] statusOptions = {"Pending", "Completed", "Cancelled"};
         int statusIndex = -1;
         for (int i = 0; i < statusOptions.length; i++) {
             if (statusOptions[i].equals(order.getStatus())) {
@@ -66,14 +71,18 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
                 break;
             }
         }
+
         if (statusIndex != -1) {
             holder.orderStatusSpinner.setSelection(statusIndex);
         }
 
-        // Handle item click
+        // Handle item click for navigation to detail fragment
         holder.itemView.setTag(order);  // Set the order object as the tag
         holder.itemView.setOnClickListener(v -> {
-            // Navigate to DetailFragment with order data
+            // Log statement for debugging
+            Log.d("OrderAdapter", "Navigating to DetailFragment...");
+
+            // Create the bundle and pass the order data
             Bundle bundle = new Bundle();
             bundle.putString("title", order.getTitle());
             bundle.putString("time", order.getTime());
@@ -84,16 +93,21 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
             DetailFragment detailFragment = new DetailFragment();
             detailFragment.setArguments(bundle);
 
-            // Check if the context is an instance of Admin and then perform the transaction
+            // Check if the context is an instance of Admin
             if (v.getContext() instanceof Admin) {
                 Admin adminActivity = (Admin) v.getContext();
                 adminActivity.getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, detailFragment)
                         .addToBackStack(null)
                         .commit();
+            } else {
+                // Show a Toast or log the issue
+                Toast.makeText(v.getContext(), "Unable to navigate to DetailFragment.", Toast.LENGTH_SHORT).show();
             }
         });
+
     }
+
 
     // Return the total number of orders
     @Override

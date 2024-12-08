@@ -1,27 +1,31 @@
 package com.example.dotaskforme;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManageOrderFragment extends Fragment {
     Context context;
-    TextView order_now,logout;
+    TextView order_now, logout;
     FirebaseAuth auth;
+    FirebaseFirestore firestore;
+    RecyclerView orderRecyclerView;
+    OrderAdapter orderAdapter;
+    List<Order> orders; // List to store orders
 
     public ManageOrderFragment() {
         // Required empty public constructor
@@ -31,12 +35,6 @@ public class ManageOrderFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -52,7 +50,19 @@ public class ManageOrderFragment extends Fragment {
         order_now = view.findViewById(R.id.order_now);
         logout = view.findViewById(R.id.logout);
         auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
+        // Initialize RecyclerView and Order List
+        orderRecyclerView = view.findViewById(R.id.order_list);
+        orders = new ArrayList<>();
+        orderAdapter = new OrderAdapter(orders); // Pass orders to the adapter
+        orderRecyclerView.setLayoutManager(new LinearLayoutManager(context)); // Set linear layout manager
+        orderRecyclerView.setAdapter(orderAdapter); // Set adapter to RecyclerView
+
+        // Fetch Orders from Firestore (or your database)
+        fetchOrdersFromFirestore();
+
+        // Handle "Order Now" button click
         order_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,33 +76,41 @@ public class ManageOrderFragment extends Fragment {
                         .commit();
             }
         });
+
+        // Handle logout button click
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Initialize and show ProgressDialog
-                ProgressDialog progressDialog = new ProgressDialog(context);
-                progressDialog.setMessage("Logging Out...");
-                progressDialog.setCancelable(false); // Prevent dismissal by tapping outside
+                ProgressDialog progressDialog;
+                progressDialog = new ProgressDialog(context);
+                progressDialog.setMessage("Log Out...");
                 progressDialog.show();
-
-                // Sign out user
                 auth.signOut();
-
-                // Dismiss ProgressDialog after logout is complete
                 progressDialog.dismiss();
-
-                // Navigate to the Login screen
                 Intent i = new Intent(getActivity(), Login.class);
                 startActivity(i);
-
-                // Finish the current activity
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
+                progressDialog.dismiss();
             }
         });
+    }
 
-
-
+    // Fetch orders from Firestore (or other database)
+    private void fetchOrdersFromFirestore() {
+        firestore.collection("orders")  // Collection name where your orders are stored
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (queryDocumentSnapshots != null) {
+                        List<Order> fetchedOrders = queryDocumentSnapshots.toObjects(Order.class);
+                        orders.clear();
+                        orders.addAll(fetchedOrders);
+                        orderAdapter.notifyDataSetChanged(); // Notify adapter to update the RecyclerView
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle errors
+                });
     }
 }

@@ -4,14 +4,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.ListenerRegistration;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,18 +27,17 @@ public class Admin extends AppCompatActivity {
     private OrderAdapter orderAdapter;
     private FirebaseFirestore db;
     private ListenerRegistration ordersListener;
+    private TextView logoutText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_your);
+        setContentView(R.layout.activity_your); // Ensure this is your correct layout
 
         // Initialize views
-        recyclerView = findViewById(R.id.recyclerView);
-        fragmentContainer = findViewById(R.id.fragment_container);
-
-        // Initialize Firestore
-        db = FirebaseFirestore.getInstance();
+        recyclerView = findViewById(R.id.order_list);  // updated to match XML id
+        fragmentContainer = findViewById(R.id.fragment_container); // updated to match XML i
+        logoutText = findViewById(R.id.logout); // updated to match XML id
 
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -42,8 +45,17 @@ public class Admin extends AppCompatActivity {
         orderAdapter = new OrderAdapter(orders);
         recyclerView.setAdapter(orderAdapter);
 
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
+
         // Fetch orders from Firestore
         fetchOrdersFromFirestore();
+
+        // Handle "Logout" button click
+        logoutText.setOnClickListener(v -> {
+            // Handle logout logic here, e.g., clearing session or navigating to login
+            Toast.makeText(Admin.this, "Logged Out", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void fetchOrdersFromFirestore() {
@@ -74,13 +86,10 @@ public class Admin extends AppCompatActivity {
     }
 
     // Handle item click to show the DetailFragment
-    public void onOrderClick(View view) {
+    public void onOrderClick(Order clickedOrder) {
         // Hide the RecyclerView and show the fragment container
         recyclerView.setVisibility(View.GONE);
         fragmentContainer.setVisibility(View.VISIBLE);
-
-        // Get the order data from the view holder (or use the clicked order directly)
-        Order clickedOrder = (Order) view.getTag();
 
         // Sample navigation to the DetailFragment
         DetailFragment detailFragment = new DetailFragment();
