@@ -1,5 +1,6 @@
 package com.example.dotaskforme;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +31,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 
@@ -44,6 +50,7 @@ public class PlaceOrder extends Fragment {
     private NavigationView navigationView;
     private ImageView ivmenu;
     FragmentManager manager;
+    private Button btnSubmit;
 
     public PlaceOrder() {
         // Required empty public constructor
@@ -61,6 +68,7 @@ public class PlaceOrder extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -191,8 +199,47 @@ public class PlaceOrder extends Fragment {
         // Set OnClickListener to show Date and Time Picker
         etExactDeadline.setOnClickListener(v -> showDateTimePicker());
 
+        btnSubmit = view.findViewById(R.id.submitButton);
+
+        // Set OnClickListener for Submit Button
+        btnSubmit.setOnClickListener(v -> {
+            // Create Dummy Order Data
+            Order order = new Order(
+                    "Dummy Order Title",        // title
+                    "12:30 PM",                 // time
+                    "Pending",                  // status
+                    "123-456-7890",             // phone
+                    "www.example.com",          // link
+                    "$100"                      // price
+            );
+
+            // Send Order Data to Firebase
+            sendOrderToFirestore(order);
+        });
+
         return view;
     }
+
+    private void sendOrderToFirestore(Order order) {
+        // Get a reference to Firestore
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Get a reference to the "orders" collection
+        CollectionReference ordersCollection = db.collection("orders");
+
+        // Create a new document with the order data
+        ordersCollection.add(order)
+                .addOnSuccessListener(documentReference -> {
+                    // Success message
+                    Toast.makeText(context, "Order submitted successfully!", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    // Log error for debugging
+                    Log.e("FirestoreError", "Failed to submit order: " + e.getMessage());
+                    Toast.makeText(context, "Failed to submit order", Toast.LENGTH_SHORT).show();
+                });
+    }
+
 
     private void openDrawer() {
         if (drawerLayout != null) {

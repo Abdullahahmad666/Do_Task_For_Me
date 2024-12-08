@@ -134,18 +134,16 @@ public class Login extends AppCompatActivity {
     }
 
     private void navigateBasedOnRole(String role) {
-        Intent intent = new Intent(Login.this, MainActivity.class);
-
         if ("Student".equals(role)) {
+            Intent intent = new Intent(Login.this, MainActivity.class);
             intent.putExtra("targetFragment", "HomeFragment"); // Example fragment for Student
+            startActivity(intent);
         } else if ("Admin".equals(role)) {
-            intent.putExtra("targetFragment", "ManageOrderFragment");
+            Intent intent = new Intent(Login.this, Admin.class); // Navigate directly to Admin activity
+            startActivity(intent);
         } else {
             Toast.makeText(Login.this, "Invalid role detected!", Toast.LENGTH_SHORT).show();
-            return; // Exit early if the role is invalid
         }
-
-        startActivity(intent);
     }
 
 

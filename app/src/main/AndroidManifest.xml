@@ -32,6 +32,11 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".Admin"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

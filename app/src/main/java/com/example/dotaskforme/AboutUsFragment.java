@@ -56,4 +56,7 @@ public class AboutUsFragment extends Fragment {
         image3.startAnimation(textAnimation);
 
     }
+
+    public static class Admin {
+    }
 }
