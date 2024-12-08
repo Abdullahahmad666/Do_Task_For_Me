@@ -30,6 +30,7 @@ public class HomeFragment extends Fragment {
     FragmentManager manager;
     private DrawerListener drawerListener;
     FloatingActionButton fabWhatsapp;
+    TextView tvbanner,bannertext1,bannertext2,bannertext3,bannertext4,bannertext5;
 
     public interface DrawerListener {
         void openDrawer();
@@ -63,10 +64,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        TextView tvbanner;
+
         tvbanner = view.findViewById(R.id.bannerText);
+        bannertext1 = view.findViewById(R.id.bannerText1);
+        bannertext2 = view.findViewById(R.id.bannerText2);
+        bannertext3 = view.findViewById(R.id.bannerText3);
+        bannertext4 = view.findViewById(R.id.bannerText4);
+        bannertext5 = view.findViewById(R.id.bannerText5);
         Animation textAnimation = AnimationUtils.loadAnimation(context, R.anim.text_animation);
         tvbanner.startAnimation(textAnimation);
+        bannertext1.startAnimation(textAnimation);
+        bannertext2.startAnimation(textAnimation);
+        bannertext3.startAnimation(textAnimation);
+        bannertext4.startAnimation(textAnimation);
+        bannertext5.startAnimation(textAnimation);
 
         completeassignmnent = view.findViewById(R.id.btnCompleteAssignment);
         getquickassistance = view.findViewById(R.id.btnQuickAssistance);
