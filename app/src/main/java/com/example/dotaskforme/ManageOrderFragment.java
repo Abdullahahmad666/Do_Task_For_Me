@@ -80,6 +80,7 @@ public class ManageOrderFragment extends Fragment {
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
+                progressDialog.dismiss();
             }
         });
 

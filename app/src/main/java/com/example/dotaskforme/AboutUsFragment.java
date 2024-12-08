@@ -6,18 +6,21 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 
 
 public class AboutUsFragment extends Fragment {
     Context context;
     ImageView image1,image2,image3;
+    Button completeassignmnetbutton;
 
 
     public AboutUsFragment() {
@@ -54,6 +57,18 @@ public class AboutUsFragment extends Fragment {
         image1.startAnimation(textAnimation);
         image2.startAnimation(textAnimation);
         image3.startAnimation(textAnimation);
+        completeassignmnetbutton = view.findViewById(R.id.completeAssignmentButton);
+        completeassignmnetbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlaceOrder placeorder = new PlaceOrder();
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                manager.beginTransaction()
+                        .replace(R.id.fragment_container, placeorder) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
+                        .commit();
+            }
+        });
 
     }
 

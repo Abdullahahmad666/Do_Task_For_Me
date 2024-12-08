@@ -2,6 +2,7 @@ package com.example.dotaskforme;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class HomeFragment extends Fragment {
@@ -25,6 +29,7 @@ public class HomeFragment extends Fragment {
     Button completeassignmnent,getquickassistance;
     FragmentManager manager;
     private DrawerListener drawerListener;
+    FloatingActionButton fabWhatsapp;
 
     public interface DrawerListener {
         void openDrawer();
@@ -86,6 +91,24 @@ public class HomeFragment extends Fragment {
                         .replace(R.id.fragment_container, contactus) // R.id.fragment_container is the container where your fragments are hosted
                         .addToBackStack(null) // Adds the transaction to the back stack so you can navigate back
                         .commit();
+            }
+        });
+        fabWhatsapp = view.findViewById(R.id.fabWhatsapp);
+        fabWhatsapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNumber = "923324331776";
+                String url = "https://wa.me/" + phoneNumber;
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+
+                // Verify WhatsApp is installed
+                if (intent.resolveActivity(requireContext().getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(requireContext(), "WhatsApp is not installed", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
