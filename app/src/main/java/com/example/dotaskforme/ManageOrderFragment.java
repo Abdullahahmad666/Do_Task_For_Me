@@ -69,20 +69,29 @@ public class ManageOrderFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProgressDialog progressDialog;
-                progressDialog = new ProgressDialog(context);
-                progressDialog.setMessage("Log Out...");
+                // Initialize and show ProgressDialog
+                ProgressDialog progressDialog = new ProgressDialog(context);
+                progressDialog.setMessage("Logging Out...");
+                progressDialog.setCancelable(false); // Prevent dismissal by tapping outside
                 progressDialog.show();
+
+                // Sign out user
                 auth.signOut();
+
+                // Dismiss ProgressDialog after logout is complete
                 progressDialog.dismiss();
+
+                // Navigate to the Login screen
                 Intent i = new Intent(getActivity(), Login.class);
                 startActivity(i);
+
+                // Finish the current activity
                 if (getActivity() != null) {
                     getActivity().finish();
                 }
-                progressDialog.dismiss();
             }
         });
+
 
 
     }
