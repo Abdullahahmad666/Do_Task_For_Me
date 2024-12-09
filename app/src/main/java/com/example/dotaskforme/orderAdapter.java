@@ -3,6 +3,7 @@ package com.example.dotaskforme;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -12,17 +13,19 @@ import java.util.List;
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
     private List<Order> orders;
-    private OnOrderClickListener listener; // Declare listener
+    private OnOrderClickListener listener;
+    private boolean isAdmin;
 
-    // Constructor to pass the list of orders and listener
-    public OrderAdapter(List<Order> orders, OnOrderClickListener listener) {
+    // Constructor to pass the list of orders, listener, and isAdmin flag
+    public OrderAdapter(List<Order> orders, OnOrderClickListener listener, boolean isAdmin) {
         this.orders = orders;
         this.listener = listener;
+        this.isAdmin = isAdmin;
     }
 
     // ViewHolder class to hold views
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView orderTitle, orderTime;
+        TextView orderTitle, orderTime, orderStatusText;
         Spinner orderStatusSpinner;
 
         public OrderViewHolder(View itemView) {
@@ -30,14 +33,20 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
             orderTitle = itemView.findViewById(R.id.orderTitle);
             orderTime = itemView.findViewById(R.id.orderTime);
             orderStatusSpinner = itemView.findViewById(R.id.orderStatusSpinner);
+            orderStatusText = itemView.findViewById(R.id.orderStatusText);
         }
     }
 
-    // Inflate the card layout and return the ViewHolder
     @Override
     public OrderViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_card, parent, false);
+        View view;
+        if (isAdmin) {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.activity_card, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.activity_card_user, parent, false);
+        }
         return new OrderViewHolder(view);
     }
 
@@ -48,29 +57,44 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
         holder.orderTitle.setText(order.getTitle());
         holder.orderTime.setText("Order Time: " + order.getTime());
 
-        // Set the adapter only once to avoid re-initializing it every time
-        if (holder.orderStatusSpinner.getAdapter() == null) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                    holder.orderStatusSpinner.getContext(),
-                    android.R.layout.simple_spinner_item,
-                    new String[]{"Pending", "Completed", "Cancelled"}
-            );
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            holder.orderStatusSpinner.setAdapter(adapter);
-        }
-
-        // Set the correct spinner selection based on order status
-        String[] statusOptions = {"Pending", "Completed", "Cancelled"};
-        int statusIndex = -1;
-        for (int i = 0; i < statusOptions.length; i++) {
-            if (statusOptions[i].equals(order.getStatus())) {
-                statusIndex = i;
-                break;
+        if (isAdmin) {
+            // Admin Side: Set the spinner with order status
+            if (holder.orderStatusSpinner.getAdapter() == null) {
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(holder.orderStatusSpinner.getContext(),
+                        android.R.layout.simple_spinner_item, new String[]{"Pending", "Completed", "Cancelled"});
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                holder.orderStatusSpinner.setAdapter(adapter);
             }
-        }
 
-        if (statusIndex != -1) {
-            holder.orderStatusSpinner.setSelection(statusIndex);
+            String[] statusOptions = {"Pending", "Completed", "Cancelled"};
+            int statusIndex = -1;
+            for (int i = 0; i < statusOptions.length; i++) {
+                if (statusOptions[i].equals(order.getStatus())) {
+                    statusIndex = i;
+                    break;
+                }
+            }
+
+            if (statusIndex != -1) {
+                holder.orderStatusSpinner.setSelection(statusIndex);
+            }
+
+            // Update the order status when spinner value changes
+            holder.orderStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    String selectedStatus = (String) parentView.getItemAtPosition(position);
+                    order.setStatus(selectedStatus);  // Update order status in the model
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // Handle if needed
+                }
+            });
+        } else {
+            // User Side: Display the status in the TextView
+            holder.orderStatusText.setText("Status: " + order.getStatus());
         }
 
         // Handle item click for navigation to detail fragment
@@ -82,13 +106,11 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
         });
     }
 
-    // Return the total number of orders
     @Override
     public int getItemCount() {
         return orders.size();
     }
 
-    // Interface to handle order item click
     public interface OnOrderClickListener {
         void onOrderClick(Order clickedOrder);
     }

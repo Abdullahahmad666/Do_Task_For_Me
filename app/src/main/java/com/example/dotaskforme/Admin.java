@@ -46,7 +46,7 @@ public class Admin extends AppCompatActivity implements OrderAdapter.OnOrderClic
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         orders = new ArrayList<>();
-        orderAdapter = new OrderAdapter(orders, this); // Pass the activity as the listener
+        orderAdapter = new OrderAdapter(orders, this,true); // Pass the activity as the listener
         recyclerView.setAdapter(orderAdapter);
 
         // Initialize Firebase Auth

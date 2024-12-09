@@ -7,7 +7,6 @@
     android:layout_height="200dp"
     tools:context=".Admin">
 
-    <!-- CardView for the user order -->
     <androidx.cardview.widget.CardView
         android:id="@+id/orderCard"
         android:layout_width="0dp"

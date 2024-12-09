@@ -57,7 +57,7 @@ public class ManageOrderFragment extends Fragment {
         // Initialize RecyclerView and Order List
         orderRecyclerView = view.findViewById(R.id.order_list);
         orders = new ArrayList<>();
-        orderAdapter = new OrderAdapter(orders,null); // Pass orders to the adapter
+        orderAdapter = new OrderAdapter(orders,null,false); // Pass orders to the adapter
         orderRecyclerView.setLayoutManager(new LinearLayoutManager(context)); // Set linear layout manager
         orderRecyclerView.setAdapter(orderAdapter); // Set adapter to RecyclerView
 
