@@ -1,25 +1,25 @@
 package com.example.dotaskforme;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.ListenerRegistration;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Admin extends AppCompatActivity {
+public class Admin extends AppCompatActivity implements OrderAdapter.OnOrderClickListener {
 
     private RecyclerView recyclerView;
     private FrameLayout fragmentContainer;
@@ -28,7 +28,9 @@ public class Admin extends AppCompatActivity {
     private FirebaseFirestore db;
     private ListenerRegistration ordersListener;
     private TextView logoutText;
+    private FirebaseAuth auth;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +44,11 @@ public class Admin extends AppCompatActivity {
         // Set up RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         orders = new ArrayList<>();
-        orderAdapter = new OrderAdapter(orders);
+        orderAdapter = new OrderAdapter(orders, this); // Pass the activity as the listener
         recyclerView.setAdapter(orderAdapter);
+
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance();
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
@@ -53,7 +58,7 @@ public class Admin extends AppCompatActivity {
 
         // Handle "Logout" button click
         logoutText.setOnClickListener(v -> {
-            // Handle logout logic here, e.g., clearing session or navigating to login
+            auth.signOut();
             Toast.makeText(Admin.this, "Logged Out", Toast.LENGTH_SHORT).show();
         });
     }
@@ -85,13 +90,13 @@ public class Admin extends AppCompatActivity {
         });
     }
 
-    // Handle item click to show the DetailFragment
+    @Override
     public void onOrderClick(Order clickedOrder) {
-        // Hide the RecyclerView and show the fragment container
+        // Hide the RecyclerView and any other components
         recyclerView.setVisibility(View.GONE);
         fragmentContainer.setVisibility(View.VISIBLE);
 
-        // Sample navigation to the DetailFragment
+        // Create and set up the DetailFragment
         DetailFragment detailFragment = new DetailFragment();
         Bundle bundle = new Bundle();
         bundle.putString("title", clickedOrder.getTitle());
@@ -101,10 +106,10 @@ public class Admin extends AppCompatActivity {
         bundle.putString("price", clickedOrder.getPrice());
         detailFragment.setArguments(bundle);
 
-        // Begin the fragment transaction
+        // Begin the fragment transaction to display the DetailFragment
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, detailFragment)
-                .addToBackStack(null)
+                .addToBackStack(null) // If you want to allow the user to navigate back
                 .commit();
     }
 

@@ -1,36 +1,34 @@
 package com.example.dotaskforme;
 
-import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
 
     private List<Order> orders;
+    private OnOrderClickListener listener; // Declare listener
 
-    // Constructor to pass the list of orders
-    public OrderAdapter(List<Order> orders) {
+    // Constructor to pass the list of orders and listener
+    public OrderAdapter(List<Order> orders, OnOrderClickListener listener) {
         this.orders = orders;
+        this.listener = listener;
     }
 
     // ViewHolder class to hold views
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
-        TextView orderTitle, orderTime, orderStatusLabel;
+        TextView orderTitle, orderTime;
         Spinner orderStatusSpinner;
 
         public OrderViewHolder(View itemView) {
             super(itemView);
             orderTitle = itemView.findViewById(R.id.orderTitle);
             orderTime = itemView.findViewById(R.id.orderTime);
-            orderStatusLabel = itemView.findViewById(R.id.orderStatusLabel);
             orderStatusSpinner = itemView.findViewById(R.id.orderStatusSpinner);
         }
     }
@@ -43,8 +41,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
         return new OrderViewHolder(view);
     }
 
-
-    @Override    // Bin
+    @Override
     public void onBindViewHolder(OrderViewHolder holder, int position) {
         Order order = orders.get(position);
 
@@ -79,39 +76,20 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
         // Handle item click for navigation to detail fragment
         holder.itemView.setTag(order);  // Set the order object as the tag
         holder.itemView.setOnClickListener(v -> {
-            // Log statement for debugging
-            Log.d("OrderAdapter", "Navigating to DetailFragment...");
-
-            // Create the bundle and pass the order data
-            Bundle bundle = new Bundle();
-            bundle.putString("title", order.getTitle());
-            bundle.putString("time", order.getTime());
-            bundle.putString("phone", order.getPhone());
-            bundle.putString("link", order.getLink());
-            bundle.putString("price", order.getPrice());
-
-            DetailFragment detailFragment = new DetailFragment();
-            detailFragment.setArguments(bundle);
-
-            // Check if the context is an instance of Admin
-            if (v.getContext() instanceof Admin) {
-                Admin adminActivity = (Admin) v.getContext();
-                adminActivity.getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, detailFragment)
-                        .addToBackStack(null)
-                        .commit();
-            } else {
-                // Show a Toast or log the issue
-                Toast.makeText(v.getContext(), "Unable to navigate to DetailFragment.", Toast.LENGTH_SHORT).show();
+            if (listener != null) {
+                listener.onOrderClick(order); // Trigger the click listener
             }
         });
-
     }
-
 
     // Return the total number of orders
     @Override
     public int getItemCount() {
         return orders.size();
+    }
+
+    // Interface to handle order item click
+    public interface OnOrderClickListener {
+        void onOrderClick(Order clickedOrder);
     }
 }

@@ -45,6 +45,7 @@
                 android:padding="16dp" />
         </FrameLayout>
 
+
         <!-- Welcome Text -->
         <TextView
             android:id="@+id/welcome_text"
@@ -102,7 +103,11 @@
                     app:layout_constraintTop_toBottomOf="@id/your_orders_text"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
-
+                <FrameLayout
+                    android:id="@+id/fragment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
                 <!-- Order List (RecyclerView) -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/order_list"

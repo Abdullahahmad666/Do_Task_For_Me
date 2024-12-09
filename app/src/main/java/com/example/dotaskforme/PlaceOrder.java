@@ -227,19 +227,47 @@ public class PlaceOrder extends Fragment {
 
         // Set OnClickListener for Submit Button
         btnSubmit.setOnClickListener(v -> {
-            // Create Dummy Order Data
-            Order order = new Order(
-                    "Dummy Order Title",        // title
-                    "12:30 PM",                 // time
-                    "Pending",                  // status
-                    "123-456-7890",             // phone
-                    "www.example.com",          // link
-                    "$100"                      // price
-            );
+            String assignmentType = null;
+            String exactDeadline = null;
+            String price = null; // Variable to hold the price
 
-            // Send Order Data to Firebase
-            sendOrderToFirestore(order);
+            // Check if the required fields are filled
+            if (assspinner.getSelectedItem() == null || vivaspinner.getSelectedItem() == null ||
+                    etExactDeadline.getText().toString().isEmpty() || selectedButton == null) {
+
+                Toast.makeText(getContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show();
+            } else {
+                // Get data from input fields
+                assignmentType = assspinner.getSelectedItem().toString();
+                String vivaPreparation = vivaspinner.getSelectedItem().toString();
+                exactDeadline = etExactDeadline.getText().toString();
+
+                // Determine the price based on the selected button
+                if (selectedButton == btn_extra_small) {
+                    price = "$10";  // Set price for extra small
+                } else if (selectedButton == btn_small) {
+                    price = "$20";  // Set price for small
+                } else if (selectedButton == btn_medium) {
+                    price = "$50";  // Set price for medium
+                } else if (selectedButton == btn_large) {
+                    price = "$100";  // Set price for large
+                }
+
+                // Create Order data object with selected price
+                Order order = new Order(
+                        assignmentType,       // title
+                        exactDeadline,        // time
+                        "Pending",            // status
+                        "123-456-7890",       // phone
+                        "https://workspace.google.com/products/drive/", // link
+                        price                 // price
+                );
+
+                // Send Order Data to Firestore
+                sendOrderToFirestore(order);
+            }
         });
+
 
         return view;
     }
