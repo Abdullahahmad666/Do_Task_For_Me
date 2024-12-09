@@ -1,6 +1,7 @@
 package com.example.dotaskforme;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -29,6 +30,7 @@ public class Admin extends AppCompatActivity implements OrderAdapter.OnOrderClic
     private ListenerRegistration ordersListener;
     private TextView logoutText;
     private FirebaseAuth auth;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -59,7 +61,11 @@ public class Admin extends AppCompatActivity implements OrderAdapter.OnOrderClic
         // Handle "Logout" button click
         logoutText.setOnClickListener(v -> {
             auth.signOut();
+
             Toast.makeText(Admin.this, "Logged Out", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(Admin.this,Login.class);
+            startActivity(i);
+            finish();
         });
     }
 

@@ -93,7 +93,7 @@ public class SignUp extends AppCompatActivity {
             }
         });
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.client_id)) // Web client ID from google-services.json
+                .requestIdToken(getString(R.string.client_id)) // Web client ID
                 .requestEmail()
                 .build();
 
@@ -267,24 +267,20 @@ public class SignUp extends AppCompatActivity {
                                 startActivity(new Intent(SignUp.this, MainActivity.class));
                             } else if ("Admin".equals(selectedRole)) {
                                 // Navigate to Admin Home Activity/Fragment
-                                navigateToFragment(new ManageOrderFragment());
+                                startActivity(new Intent(SignUp.this, Admin.class));
+                                finish(); // Close Sign-Up Activity
+                            } else {
+                                Toast.makeText(this, "Error saving role: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                            finish(); // Close Sign-Up Activity
-                        } else {
-                            Toast.makeText(this, "Error saving role: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                        ;
                     });
+
+            builder.setCancelable(false);
+            builder.show();
         });
 
-        builder.setCancelable(false);
-        builder.show();
-    }
-    private void navigateToFragment(Fragment fragment) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment); // Replace with your container ID
-        fragmentTransaction.commit();
+
     }
 
-
-
-}
+};

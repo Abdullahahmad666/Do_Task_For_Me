@@ -61,7 +61,7 @@ public class Login extends AppCompatActivity {
                 progressDialog.dismiss();
                 return;
             }
-            navigateBasedOnRole("Student");
+          //  navigateBasedOnRole("Student");
             auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
                         progressDialog.dismiss(); // Always dismiss ProgressDialog
