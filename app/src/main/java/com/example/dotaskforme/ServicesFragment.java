@@ -56,5 +56,6 @@ public class ServicesFragment extends Fragment {
                         .commit();
             }
         });
+
     }
 }

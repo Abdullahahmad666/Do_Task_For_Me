@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
@@ -87,6 +89,7 @@ public class ManageOrderFragment extends Fragment {
                 progressDialog.show();
                 auth.signOut();
                 progressDialog.dismiss();
+                Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getActivity(), Login.class);
                 startActivity(i);
                 if (getActivity() != null) {
@@ -110,7 +113,7 @@ public class ManageOrderFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e -> {
-                    // Handle errors
+                    Toast.makeText(context, "Error while fetching...", Toast.LENGTH_SHORT).show();
                 });
     }
 }

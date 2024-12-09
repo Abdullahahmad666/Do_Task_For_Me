@@ -99,6 +99,22 @@ public class MainActivity extends AppCompatActivity implements HomeFragment.Draw
         if (drawerLayout != null) {
             drawerLayout.openDrawer(GravityCompat.START);
         }
+
+    }
+    public void onBackPressed() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        // Check if the current fragment is not the HomeFragment
+        if (currentFragment != null && !(currentFragment instanceof HomeFragment)) {
+            // Navigate to the HomeFragment
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            // Default back press behavior
+            super.onBackPressed();
+        }
     }
 }
 
