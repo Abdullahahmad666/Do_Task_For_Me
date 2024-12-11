@@ -1,6 +1,7 @@
 package com.example.dotaskforme;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class ServicesFragment extends Fragment {
     Context context;
     Button placeorderbutton;
+    ImageButton back;
 
     public ServicesFragment() {
         // Required empty public constructor
@@ -44,6 +47,7 @@ public class ServicesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         placeorderbutton = view.findViewById(R.id.placeOrderButton);
+        back = view.findViewById(R.id.backButton);
 
         placeorderbutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +58,16 @@ public class ServicesFragment extends Fragment {
                         .replace(R.id.fragment_container, placeorder) // fragment_container is your container ID
                         .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
                         .commit();
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), MainActivity.class);
+                startActivity(i);
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
             }
         });
 
