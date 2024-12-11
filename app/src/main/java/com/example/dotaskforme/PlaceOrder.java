@@ -32,6 +32,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
@@ -41,7 +43,7 @@ import java.util.Calendar;
 
 public class PlaceOrder extends Fragment {
     private Spinner assspinner, vivaspinner; // Spinner for Assignment Type
-    private EditText etExactDeadline; // EditText for Exact Deadline
+    private EditText etExactDeadline, etWhatsapp, etGoogleDriveLink; // EditText for Exact Deadline
     private Context context;
     Button btn_extra_small, btn_small, btn_large, btn_medium, btn_browse;
     TextView tv_example, tv_possible_deliverables;
@@ -175,6 +177,8 @@ public class PlaceOrder extends Fragment {
         tv_example = view.findViewById(R.id.tv_example);
         tv_possible_deliverables = view.findViewById(R.id.tv_possible_deliverables);
         fileNameTextView = view.findViewById(R.id.tv_file_name);
+        etWhatsapp = view.findViewById(R.id.et_whatsapp); // Initialize WhatsApp EditText
+        etGoogleDriveLink = view.findViewById(R.id.et_google_drive_link);
 
         // Button click listeners with inline tracking
         btn_extra_small.setOnClickListener(v -> {
@@ -225,21 +229,27 @@ public class PlaceOrder extends Fragment {
 
         btnSubmit = view.findViewById(R.id.submitButton);
 
-        // Set OnClickListener for Submit Button
         btnSubmit.setOnClickListener(v -> {
             String assignmentType = null;
             String exactDeadline = null;
             String price = null; // Variable to hold the price
+            String vivaPreparation = null;
+            String whatsappNumber = null; // Variable to hold WhatsApp number
+            String googleDriveLink = null; // Variable to hold Google Drive link
+
+            // Retrieve input from EditTexts
+            whatsappNumber = etWhatsapp.getText().toString().trim();
+            googleDriveLink = etGoogleDriveLink.getText().toString().trim();
 
             // Check if the required fields are filled
             if (assspinner.getSelectedItem() == null || vivaspinner.getSelectedItem() == null ||
-                    etExactDeadline.getText().toString().isEmpty() || selectedButton == null) {
-
+                    etExactDeadline.getText().toString().isEmpty() || selectedButton == null ||
+                    whatsappNumber.isEmpty() || googleDriveLink.isEmpty()) {
                 Toast.makeText(getContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show();
             } else {
                 // Get data from input fields
                 assignmentType = assspinner.getSelectedItem().toString();
-                String vivaPreparation = vivaspinner.getSelectedItem().toString();
+                vivaPreparation = vivaspinner.getSelectedItem().toString();
                 exactDeadline = etExactDeadline.getText().toString();
 
                 // Determine the price based on the selected button
@@ -253,14 +263,15 @@ public class PlaceOrder extends Fragment {
                     price = "$100";  // Set price for large
                 }
 
-                // Create Order data object with selected price
+                // Create Order data object with selected price and dynamic phone/link
                 Order order = new Order(
-                        assignmentType,       // title
-                        exactDeadline,        // time
-                        "Pending",            // status
-                        "123-456-7890",       // phone
-                        "https://workspace.google.com/products/drive/", // link
-                        price                 // price
+                        assignmentType,        // assignment type
+                        exactDeadline,         // deadline
+                        "Pending",             // status
+                        whatsappNumber,        // phone number from UI
+                        googleDriveLink,       // link from UI
+                        price,
+                        vivaPreparation
                 );
 
                 // Send Order Data to Firestore
@@ -268,11 +279,21 @@ public class PlaceOrder extends Fragment {
             }
         });
 
-
         return view;
     }
 
-    private void sendOrderToFirestore(Order order) {
+    // Modified sendOrderToFirestore method
+    public void sendOrderToFirestore(Order order) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (currentUser == null) {
+            Toast.makeText(context, "You must be logged in to place an order.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = currentUser.getUid();
+        order.setUserId(userId); // Attach userId to the order
+
         // Get a reference to Firestore
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -282,8 +303,14 @@ public class PlaceOrder extends Fragment {
         // Create a new document with the order data
         ordersCollection.add(order)
                 .addOnSuccessListener(documentReference -> {
+                    // Attach the Firestore document ID to the order object
+                    order.setDocumentId(documentReference.getId());  // Set the generated document ID
+
                     // Success message
                     Toast.makeText(context, "Order submitted successfully!", Toast.LENGTH_SHORT).show();
+
+                    // You can now use the order object with the documentId
+                    // e.g., update status, fetch order, etc.
                 })
                 .addOnFailureListener(e -> {
                     // Log error for debugging
@@ -291,7 +318,6 @@ public class PlaceOrder extends Fragment {
                     Toast.makeText(context, "Failed to submit order", Toast.LENGTH_SHORT).show();
                 });
     }
-
 
     private void openDrawer() {
         if (drawerLayout != null) {
@@ -304,8 +330,6 @@ public class PlaceOrder extends Fragment {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
     }
-
-
 
     private void showDateTimePicker() {
         Calendar calendar = Calendar.getInstance();

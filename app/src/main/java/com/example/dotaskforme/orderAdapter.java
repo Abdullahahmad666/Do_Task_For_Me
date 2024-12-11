@@ -7,7 +7,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 
 class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
@@ -80,11 +87,49 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
             }
 
             // Update the order status when spinner value changes
+            // Update the order status when spinner value changes
             holder.orderStatusSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
+
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     String selectedStatus = (String) parentView.getItemAtPosition(position);
                     order.setStatus(selectedStatus);  // Update order status in the model
+
+                    // Get the userId (not orderId) for querying
+                    String userId = order.getUserId();  // Use the userId to query the document
+
+                    // Reference to Firestore
+                    FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+
+                    // Use whereEqualTo to match the userId field in Firestore
+                    firestore.collection("orders")
+                            .whereEqualTo("userId", userId)  // Match the userId field
+                            .get()
+                            .addOnSuccessListener(queryDocumentSnapshots -> {
+                                if (!queryDocumentSnapshots.isEmpty()) {
+                                    // Document found, update the status
+                                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                        // Update the document's status
+                                        documentSnapshot.getReference()
+                                                .update("status", selectedStatus)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    // Successfully updated status
+                                                   // Toast.makeText(parentView.getContext(), "Status updated", Toast.LENGTH_SHORT).show();
+                                                })
+                                                .addOnFailureListener(e -> {
+                                                    // Handle failure to update status
+                                                    Toast.makeText(parentView.getContext(), "Error updating status", Toast.LENGTH_SHORT).show();
+                                                });
+                                    }
+                                } else {
+                                    // Handle the case where no document was found for the userId
+                                    Toast.makeText(parentView.getContext(), "No order found for the specified user", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                // Handle Firestore query failure
+                                Toast.makeText(parentView.getContext(), "Error finding order", Toast.LENGTH_SHORT).show();
+                            });
                 }
 
                 @Override
@@ -92,6 +137,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
                     // Handle if needed
                 }
             });
+
         } else {
             // User Side: Display the status in the TextView
             holder.orderStatusText.setText("Status: " + order.getStatus());
@@ -105,6 +151,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
             }
         });
     }
+
 
     @Override
     public int getItemCount() {

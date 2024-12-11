@@ -1,12 +1,15 @@
 package com.example.dotaskforme;
 
 public class Order {
+    private String documentId; // Add the document ID field
     private String title;
     private String time;
     private String status;
     private String phone;
     private String link;
+    private String vivaPresentation;
     private String price;
+    private String userId;
 
     // No-argument constructor (needed for Firestore)
     public Order() {
@@ -14,16 +17,26 @@ public class Order {
     }
 
     // Constructor with arguments (if you need it for other purposes)
-    public Order(String title, String time, String status, String phone, String link, String price) {
+    public Order(String title, String time, String status, String phone, String link, String price, String vivaPresentation) {
         this.title = title;
         this.time = time;
         this.status = status;
         this.phone = phone;
         this.link = link;
         this.price = price;
+        this.vivaPresentation = vivaPresentation;
     }
 
-    // Getters and setters
+    // Getter and setter for documentId
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
+
+    // Getters and setters for other fields
     public String getTitle() {
         return title;
     }
@@ -70,5 +83,13 @@ public class Order {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

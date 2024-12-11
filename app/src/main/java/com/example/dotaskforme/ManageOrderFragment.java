@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,18 +103,37 @@ public class ManageOrderFragment extends Fragment {
 
     // Fetch orders from Firestore (or other database)
     private void fetchOrdersFromFirestore() {
-        firestore.collection("orders")  // Collection name where your orders are stored
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (queryDocumentSnapshots != null) {
-                        List<Order> fetchedOrders = queryDocumentSnapshots.toObjects(Order.class);
-                        orders.clear();
-                        orders.addAll(fetchedOrders);
-                        orderAdapter.notifyDataSetChanged(); // Notify adapter to update the RecyclerView
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(context, "Error while fetching...", Toast.LENGTH_SHORT).show();
-                });
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();  // Get the current user's UID
+
+            // Query Firestore to fetch orders where userId matches the current user's ID
+            firestore.collection("orders")
+                    .whereEqualTo("userId", userId)  // Filter orders by userId
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        if (queryDocumentSnapshots != null && !queryDocumentSnapshots.isEmpty()) {
+                            // Convert the fetched documents into a list of Order objects
+                            List<Order> fetchedOrders = queryDocumentSnapshots.toObjects(Order.class);
+
+                            // Clear the previous orders and add the new ones
+                            orders.clear();
+                            orders.addAll(fetchedOrders);
+
+                            // Notify the adapter to refresh the data
+                            orderAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(context, "No orders found for the current user.", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        // Handle failure to fetch orders
+                        Toast.makeText(context, "Error while fetching orders.", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            // Handle the case where the user is not logged in
+            Toast.makeText(context, "You must be logged in to fetch orders.", Toast.LENGTH_SHORT).show();
+        }
     }
+
 }
