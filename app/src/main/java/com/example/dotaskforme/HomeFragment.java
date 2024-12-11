@@ -24,9 +24,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 public class HomeFragment extends Fragment {
-    ImageView iv_icon;
+    ImageView iv_icon,imageinside0;
     Context context;
-    Button completeassignmnent,getquickassistance;
+    Button completeassignmnent,getquickassistance,placeorderbutton;
     FragmentManager manager;
     private DrawerListener drawerListener;
     FloatingActionButton fabWhatsapp;
@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        placeorderbutton = view.findViewById(R.id.placeOrderButton);
         iv_icon = view.findViewById(R.id.iv_icon);
         iv_icon.setOnClickListener(v -> {
             if (drawerListener != null) {
@@ -71,13 +71,16 @@ public class HomeFragment extends Fragment {
         bannertext3 = view.findViewById(R.id.bannerText3);
         bannertext4 = view.findViewById(R.id.bannerText4);
         bannertext5 = view.findViewById(R.id.bannerText5);
+        imageinside0 = view.findViewById(R.id.imageInsideO);
         Animation textAnimation = AnimationUtils.loadAnimation(context, R.anim.text_animation);
+        imageinside0.startAnimation(textAnimation);
         tvbanner.startAnimation(textAnimation);
         bannertext1.startAnimation(textAnimation);
         bannertext2.startAnimation(textAnimation);
         bannertext3.startAnimation(textAnimation);
         bannertext4.startAnimation(textAnimation);
         bannertext5.startAnimation(textAnimation);
+
 
         completeassignmnent = view.findViewById(R.id.btnCompleteAssignment);
         getquickassistance = view.findViewById(R.id.btnQuickAssistance);
@@ -101,6 +104,17 @@ public class HomeFragment extends Fragment {
                         .beginTransaction()
                         .replace(R.id.fragment_container, contactus) // R.id.fragment_container is the container where your fragments are hosted
                         .addToBackStack(null) // Adds the transaction to the back stack so you can navigate back
+                        .commit();
+            }
+        });
+        placeorderbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlaceOrder placeorder = new PlaceOrder();
+                FragmentManager manager = requireActivity().getSupportFragmentManager();
+                manager.beginTransaction()
+                        .replace(R.id.fragment_container, placeorder) // fragment_container is your container ID
+                        .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
                         .commit();
             }
         });

@@ -330,18 +330,438 @@
                     android:layout_gravity="center_vertical" />
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/do_task_for_me"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="26sp"
-            app:layout_constraintTop_toBottomOf="@id/llvertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"
-            />
+            <TextView
+                android:id="@+id/recentWorkTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="RECENT WORK"
+                android:textSize="14sp"
+                android:textColor="#4FC3F7"
+                android:textStyle="bold"
+                android:drawableStart="@drawable/awesome"
+                app:layout_constraintTop_toBottomOf="@id/llvertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/recentGalleryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Our Recent Project Gallery"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/recentWorkTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Project Gallery Section -->
+            <LinearLayout
+                android:id="@+id/projectGallery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/recentGalleryTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Row 1: Three Project Images -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:id="@+id/image1"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/meet11"
+                        android:layout_margin="4dp" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:id="@+id/image2"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/meet12"
+                        android:layout_margin="4dp" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:id="@+id/image3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/meet13"
+                        android:layout_margin="4dp" />
+                </LinearLayout>
+
+                <!-- Row 2: Single Highlighted Image -->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/meet14"
+                    android:id="@+id/image4"
+                    android:layout_marginTop="8dp" />
+
+                <!-- Row 3: Three More Project Images -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:layout_marginTop="8dp">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:id="@+id/image5"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/meet15"
+                        android:layout_margin="4dp" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:id="@+id/image6"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/meet16"
+                        android:layout_margin="4dp" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_weight="1"
+                        android:id="@+id/image7"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/meet"
+                        android:layout_margin="4dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Statistics Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/statisticsSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:layout_constraintTop_toBottomOf="@id/projectGallery"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Statistic 1: Years Experience -->
+                <TextView
+                    android:id="@+id/yearsExperience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textSize="36sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/yearsExperienceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Years of Experience"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/yearsExperience"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Statistic 2: Projects Complete -->
+                <TextView
+                    android:id="@+id/projectsComplete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="300"
+                    android:textSize="36sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/yearsExperienceLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/projectsCompleteLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Projects Complete"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/projectsComplete"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Statistic 3: Customer Happy -->
+                <TextView
+                    android:id="@+id/customerHappy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3k"
+                    android:textSize="36sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/projectsCompleteLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/customerHappyLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Customer Happy"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/customerHappy"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- Statistic 4: Top Developers -->
+                <TextView
+                    android:id="@+id/topDevelopers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20"
+                    android:textSize="36sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/customerHappyLabel"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/topDevelopersLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Top Developers"
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF"
+                    app:layout_constraintTop_toBottomOf="@id/topDevelopers"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/titleWhatWeOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WHAT WE OFFER"
+                android:textSize="14sp"
+                android:textColor="#4FC3F7"
+                android:textStyle="bold"
+
+                android:drawableStart="@drawable/awesome"
+                app:layout_constraintTop_toBottomOf="@id/statisticsSection"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"/>
+
+            <TextView
+                android:id="@+id/titleProvideBestServices"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Provide Best Services"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/titleWhatWeOffer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- JavaScript Assignments Card -->
+            <LinearLayout
+                android:id="@+id/cardJavaScript"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:background="#112B56"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@id/titleProvideBestServices"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="18sp"
+                    android:textColor="#4FC3F7"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="JavaScript Assignments"
+                    android:textSize="18sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Our experts can assist with all your types of JavaScript tasks."
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="READ MORE"
+                    android:textSize="14sp"
+                    android:textColor="#4FC3F7"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Python Assignments Card -->
+            <LinearLayout
+                android:id="@+id/cardPython"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:background="#112B56"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@id/cardJavaScript"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textSize="18sp"
+                    android:textColor="#4FC3F7"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Python Assignments"
+                    android:textSize="18sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Our experts can assist with all your types of Python tasks."
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="READ MORE"
+                    android:textSize="14sp"
+                    android:textColor="#4FC3F7"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Writing Assignments Card -->
+            <LinearLayout
+                android:id="@+id/cardWriting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:background="#112B56"
+                android:padding="16dp"
+                app:layout_constraintTop_toBottomOf="@id/cardPython"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textSize="18sp"
+                    android:textColor="#4FC3F7"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Writing Assignments"
+                    android:textSize="18sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Our experts can assist with all your types of writing tasks."
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="READ MORE"
+                    android:textSize="14sp"
+                    android:textColor="#4FC3F7"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Footer Section -->
+            <LinearLayout
+                android:id="@+id/footerSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#1C355F"
+                android:padding="16dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/cardWriting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Can you do assignment for me?"
+                    android:textSize="18sp"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="We are here for you 24/7. Just tell us about your assignment, and we'll help you out."
+                    android:textSize="14sp"
+                    android:textColor="#FFFFFF" />
+
+                <Button
+                    android:id="@+id/placeOrderButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="#4FC3F7"
+                    android:text="Place an Order"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
