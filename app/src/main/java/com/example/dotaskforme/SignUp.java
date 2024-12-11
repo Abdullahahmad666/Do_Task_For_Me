@@ -34,6 +34,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -98,7 +99,12 @@ public class SignUp extends AppCompatActivity {
                 .build();
 
         signInClient = GoogleSignIn.getClient(this, gso);
-        ivgoogle.setOnClickListener(view -> signInWithGoogle());
+        ivgoogle.setOnClickListener(view -> {
+            Log.d("SignUpActivity", "Google sign-in clicked");
+            Toast.makeText(SignUp.this, "Google sign-in clicked", Toast.LENGTH_SHORT).show();
+            signInWithGoogle();
+        });
+
 
 
         btnsignup.setOnClickListener(view -> {
@@ -197,27 +203,29 @@ public class SignUp extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     @Override
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("SignUpActivity", "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
 
         if (requestCode == RC_SIGN_IN) {
             try {
                 GoogleSignInAccount account = GoogleSignIn.getSignedInAccountFromIntent(data).getResult(ApiException.class);
                 if (account != null) {
+                    Log.d("SignUpActivity", "Google Sign-In successful: " + account.getEmail());
                     firebaseAuthWithGoogle(account);
                 } else {
+                    Log.w("SignUpActivity", "Google sign-in canceled");
                     Toast.makeText(this, "Google sign-in canceled", Toast.LENGTH_SHORT).show();
                 }
             } catch (ApiException e) {
-                if (e.getStatusCode() == GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
-                    Toast.makeText(this, "Google sign-in canceled by user.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.e("GoogleSignIn", "Google sign-in failed", e);
-                    Toast.makeText(this, "Google Sign-In failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                Log.e("SignUpActivity", "Google sign-in failed", e);
+                Toast.makeText(this, "Google Sign-In failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
 
@@ -230,8 +238,11 @@ public class SignUp extends AppCompatActivity {
                             String email = user.getEmail();
                             String userName = user.getDisplayName();
 
-                            // Show role selection dialog for new users
-                            showRoleSelectionDialog(userName, email, uid);
+                            Log.d("SignUpActivity", "User signed in successfully: " + userName);
+                            Log.d("SignUpActivity", "UID: " + uid + ", Email: " + email);
+
+                            // Check if the user exists in Firestore and retrieve their role
+                            checkUserRole(uid, userName, email);
                         }
                     } else {
                         Log.e("FirebaseAuth", "Google authentication failed", task.getException());
@@ -239,13 +250,47 @@ public class SignUp extends AppCompatActivity {
                     }
                 });
     }
+
+    private void checkUserRole(String uid, String userName, String email) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Check if the user exists in Firestore
+        db.collection("users").document(uid).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // User already exists, retrieve their role
+                            String role = document.getString("role");
+                            Log.d("SignUpActivity", "User role: " + role);
+
+                            // Navigate based on role
+                            if ("Student".equals(role)) {
+                                startActivity(new Intent(SignUp.this, MainActivity.class));
+                            } else if ("Admin".equals(role)) {
+                                startActivity(new Intent(SignUp.this, Admin.class));
+                            }
+                            finish();
+                        } else {
+                            // User does not exist, show role selection dialog
+                            showRoleSelectionDialog(userName, email, uid);
+                        }
+                    } else {
+                        Log.e("SignUpActivity", "Error checking user role", task.getException());
+                    }
+                });
+    }
+
     private void showRoleSelectionDialog(String userName, String email, String uid) {
+        Log.d("SignUpActivity", "Showing role selection dialog for user: " + userName);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Your Role");
 
         String[] roles = {"Student", "Admin"};
         builder.setItems(roles, (dialog, which) -> {
             String selectedRole = roles[which];
+            Log.d("SignUpActivity", "Selected role: " + selectedRole);
 
             FirebaseFirestore db = FirebaseFirestore.getInstance();
             HashMap<String, Object> userData = new HashMap<>();
@@ -259,28 +304,36 @@ public class SignUp extends AppCompatActivity {
                     .set(userData)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
-                            Toast.makeText(this, "Role saved successfully!", Toast.LENGTH_SHORT).show();
+                            Log.d("SignUpActivity", "Role saved successfully");
 
                             // Navigate based on role
                             if ("Student".equals(selectedRole)) {
-                                // Navigate to Student Home Activity/Fragment
                                 startActivity(new Intent(SignUp.this, MainActivity.class));
                             } else if ("Admin".equals(selectedRole)) {
-                                // Navigate to Admin Home Activity/Fragment
                                 startActivity(new Intent(SignUp.this, Admin.class));
-                                finish(); // Close Sign-Up Activity
-                            } else {
-                                Toast.makeText(this, "Error saving role: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
+                            finish();
+                        } else {
+                            Log.e("SignUpActivity", "Error saving role", task.getException());
                         }
-                        ;
                     });
-
-            builder.setCancelable(false);
-            builder.show();
         });
 
-
+        builder.setCancelable(false);
+        builder.show();
     }
+    private void signOut() {
+        FirebaseAuth.getInstance().signOut();
+
+        // Google sign-out
+        GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
+                .addOnCompleteListener(this, task -> {
+                    // After sign out, proceed with Google sign-in or other methods
+                    startActivity(new Intent(SignUp.this, Login.class));
+                    finish();
+                });
+    }
+
+
 
 };

@@ -1,16 +1,26 @@
 package com.example.dotaskforme;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -59,14 +69,57 @@ public class Admin extends AppCompatActivity implements OrderAdapter.OnOrderClic
         fetchOrdersFromFirestore();
 
         // Handle "Logout" button click
-        logoutText.setOnClickListener(v -> {
-            auth.signOut();
+        logoutText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProgressDialog progressDialog = new ProgressDialog(Admin.this);
+                progressDialog.setMessage("Log Out...");
+                progressDialog.show();
 
-            Toast.makeText(Admin.this, "Logged Out", Toast.LENGTH_SHORT).show();
-            Intent i = new Intent(Admin.this,Login.class);
-            startActivity(i);
-            finish();
+                // Sign out from Firebase
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                auth.signOut();
+
+                // Check if the user is signed in with Google
+                GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(Admin.this);
+                if (googleSignInAccount != null) {
+                    // User is signed in with Google, sign out from Google
+                    GoogleSignIn.getClient(Admin.this, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    // Handle Google sign-out success or failure
+                                    if (task.isSuccessful()) {
+                                        Log.d("SignOut", "Google sign-out successful");
+                                    } else {
+                                        Log.e("SignOut", "Google sign-out failed", task.getException());
+                                    }
+
+                                    // Proceed with Firebase logout after Google sign-out
+                                    progressDialog.dismiss();
+                                    Toast.makeText(Admin.this, "Logged Out", Toast.LENGTH_SHORT).show();
+
+                                    // Navigate to Login Activity
+                                    Intent i = new Intent(Admin.this, Login.class);
+                                    startActivity(i);
+                                    finish();
+
+                                }
+                            });
+                } else {
+                    // If not signed in with Google, just proceed with Firebase logout
+                    progressDialog.dismiss();
+                    Toast.makeText(Admin.this, "Logged Out", Toast.LENGTH_SHORT).show();
+
+                    // Navigate to Login Activity
+                    Intent i = new Intent(Admin.this, Login.class);
+                    startActivity(i);
+                    finish();
+
+                }
+            }
         });
+
     }
 
     private void fetchOrdersFromFirestore() {

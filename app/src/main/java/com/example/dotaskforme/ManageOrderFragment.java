@@ -9,12 +9,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -84,21 +91,56 @@ public class ManageOrderFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ProgressDialog progressDialog;
-                progressDialog = new ProgressDialog(context);
+                ProgressDialog progressDialog = new ProgressDialog(context);
                 progressDialog.setMessage("Log Out...");
                 progressDialog.show();
+
+                // Sign out from Firebase
+                FirebaseAuth auth = FirebaseAuth.getInstance();
                 auth.signOut();
-                progressDialog.dismiss();
-                Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(getActivity(), Login.class);
-                startActivity(i);
-                if (getActivity() != null) {
-                    getActivity().finish();
+
+                // Check if the user is signed in with Google
+                GoogleSignInAccount googleSignInAccount = GoogleSignIn.getLastSignedInAccount(context);
+                if (googleSignInAccount != null) {
+                    // User is signed in with Google, sign out from Google
+                    GoogleSignIn.getClient(context, GoogleSignInOptions.DEFAULT_SIGN_IN).signOut()
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    // Handle Google sign-out success or failure
+                                    if (task.isSuccessful()) {
+                                        Log.d("SignOut", "Google sign-out successful");
+                                    } else {
+                                        Log.e("SignOut", "Google sign-out failed", task.getException());
+                                    }
+
+                                    // Proceed with Firebase logout after Google sign-out
+                                    progressDialog.dismiss();
+                                    Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
+
+                                    // Navigate to Login Activity
+                                    Intent i = new Intent(getActivity(), Login.class);
+                                    startActivity(i);
+                                    if (getActivity() != null) {
+                                        getActivity().finish();
+                                    }
+                                }
+                            });
+                } else {
+                    // If not signed in with Google, just proceed with Firebase logout
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
+
+                    // Navigate to Login Activity
+                    Intent i = new Intent(getActivity(), Login.class);
+                    startActivity(i);
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
                 }
-                progressDialog.dismiss();
             }
         });
+
     }
 
     // Fetch orders from Firestore (or other database)
