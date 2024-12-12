@@ -166,8 +166,14 @@ public class SignUp extends AppCompatActivity {
                                     .addOnCompleteListener(storeTask -> {
                                         if (storeTask.isSuccessful()) {
                                             Toast.makeText(SignUp.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(SignUp.this, Login.class));
-                                            finish();
+
+                                            // Navigate to the appropriate activity based on the role
+                                            if ("Student".equalsIgnoreCase(role)) {
+                                                startActivity(new Intent(SignUp.this, MainActivity.class));
+                                            } else if ("Admin".equalsIgnoreCase(role)) {
+                                                startActivity(new Intent(SignUp.this, Admin.class));
+                                            }
+                                            finish(); // Close SignUp activity
                                         } else {
                                             Toast.makeText(SignUp.this, "Firestore error: " + storeTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
@@ -177,7 +183,6 @@ public class SignUp extends AppCompatActivity {
                         }
                     });
         });
-
 
 
     }

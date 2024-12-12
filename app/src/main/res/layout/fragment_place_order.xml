@@ -510,7 +510,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Good Deal"
+                        android:text="Total Price"
                         android:textSize="14sp"
                         android:textColor="@color/black" />
 
@@ -518,7 +518,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="..."
+                        android:id="@+id/pricevalue"
+                        android:text=" "
                         android:textSize="14sp"
                         android:textColor="@color/black"
                         android:layout_gravity="end" />

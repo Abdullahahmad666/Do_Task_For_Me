@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -48,7 +49,7 @@ public class PlaceOrder extends Fragment {
     Button btn_extra_small, btn_small, btn_large, btn_medium, btn_browse;
     TextView tv_example, tv_possible_deliverables;
     private static final int REQUEST_CODE_PICK_FILE = 1;
-    private TextView fileNameTextView;
+    private TextView fileNameTextView,pricevalue;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ImageView ivmenu;
@@ -84,10 +85,12 @@ public class PlaceOrder extends Fragment {
         vivaspinner = view.findViewById(R.id.spinner_viva_preparation);
 
 
+
         // Initialize DrawerLayout and NavigationView
         drawerLayout = view.findViewById(R.id.draw_header);
         navigationView = view.findViewById(R.id.order_nav);
         ivmenu = view.findViewById(R.id.iv_icon);
+        pricevalue = view.findViewById(R.id.pricevalue);
 
         ivmenu.setOnClickListener(v -> {
             // Open the drawer when the icon is clicked
@@ -104,7 +107,7 @@ public class PlaceOrder extends Fragment {
 
                 // Use FragmentManager to replace the current fragment
                 FragmentManager manager = requireActivity().getSupportFragmentManager();
-                       manager.beginTransaction()
+                manager.beginTransaction()
                         .replace(R.id.fragment_container, HomeFragment) // fragment_container is your container ID
                         .addToBackStack(null) // Optional: Allows the user to press back and return to the previous fragment
                         .commit();
@@ -234,8 +237,8 @@ public class PlaceOrder extends Fragment {
             String exactDeadline = null;
             String price = null; // Variable to hold the price
             String vivaPreparation = null;
-            String whatsappNumber = null; // Variable to hold WhatsApp number
-            String googleDriveLink = null; // Variable to hold Google Drive link
+            String whatsappNumber; // Variable to hold WhatsApp number
+            String googleDriveLink; // Variable to hold Google Drive link
 
             // Retrieve input from EditTexts
             whatsappNumber = etWhatsapp.getText().toString().trim();
@@ -246,6 +249,8 @@ public class PlaceOrder extends Fragment {
                     etExactDeadline.getText().toString().isEmpty() || selectedButton == null ||
                     whatsappNumber.isEmpty() || googleDriveLink.isEmpty()) {
                 Toast.makeText(getContext(), "Please fill all required fields", Toast.LENGTH_SHORT).show();
+            } else if (!isValidGoogleDriveLink(googleDriveLink)) { // Check if the Google Drive link is valid
+                Toast.makeText(getContext(), "Please enter a valid Google Drive link", Toast.LENGTH_SHORT).show();
             } else {
                 // Get data from input fields
                 assignmentType = assspinner.getSelectedItem().toString();
@@ -254,13 +259,17 @@ public class PlaceOrder extends Fragment {
 
                 // Determine the price based on the selected button
                 if (selectedButton == btn_extra_small) {
-                    price = "$10";  // Set price for extra small
+                    price = "$10";
+                    pricevalue.setText("$10");// Set price for extra small
                 } else if (selectedButton == btn_small) {
-                    price = "$20";  // Set price for small
+                    price = "$20";
+                    pricevalue.setText("$20");// Set price for small
                 } else if (selectedButton == btn_medium) {
                     price = "$50";  // Set price for medium
+                    pricevalue.setText("$50");
                 } else if (selectedButton == btn_large) {
                     price = "$100";  // Set price for large
+                    pricevalue.setText("$100");
                 }
 
                 // Create Order data object with selected price and dynamic phone/link
@@ -279,8 +288,15 @@ public class PlaceOrder extends Fragment {
             }
         });
 
-        return view;
+    return view;
     }
+
+        private boolean isValidGoogleDriveLink (String googleDriveLink){
+            String driveRegex = "^(https:\\/\\/)?(drive\\.google\\.com\\/)(file\\/d\\/|open\\?id=|drive\\/folders\\/|drive\\/u\\/\\d\\/folders\\/|drive\\/u\\/\\d\\/file\\/d\\/).*";
+            return !TextUtils.isEmpty(googleDriveLink) && googleDriveLink.matches(driveRegex);
+        }
+
+
 
     // Modified sendOrderToFirestore method
     public void sendOrderToFirestore(Order order) {

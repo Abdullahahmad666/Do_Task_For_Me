@@ -108,29 +108,53 @@ public class Login extends AppCompatActivity {
             EditText etEmail = new EditText(view.getContext());
             AlertDialog.Builder forgetPasswordDialog = new AlertDialog.Builder(view.getContext())
                     .setTitle("Forget Password Email...")
+                    .setMessage("Enter Email...")
                     .setView(etEmail)
                     .setPositiveButton("Send", (dialogInterface, i) -> {
                         String email = etEmail.getText().toString().trim();
                         if (TextUtils.isEmpty(email)) {
-                            etEmail.setError("Give valid email address");
+                            etEmail.setError("Provide a valid email address");
                         } else {
+                            // Show progress dialog while checking the email in the database
                             ProgressDialog progressDialog = new ProgressDialog(Login.this);
-                            progressDialog.setMessage("Sending Email...");
+                            progressDialog.setMessage("Checking email...");
                             progressDialog.show();
-                            auth.sendPasswordResetEmail(email)
+
+                            // Assume Firebase Firestore is used for the database
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                            // Check if the email exists in the database
+                            db.collection("users")
+                                    .whereEqualTo("email", email)
+                                    .get()
                                     .addOnCompleteListener(task -> {
-                                        if (task.isSuccessful()) {
-                                            Toast.makeText(Login.this, "Check your inbox...", Toast.LENGTH_SHORT).show();
+                                        if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                                            // Email exists in the database, send password reset email
+                                            auth.sendPasswordResetEmail(email)
+                                                    .addOnCompleteListener(resetTask -> {
+                                                        if (resetTask.isSuccessful()) {
+                                                            Toast.makeText(Login.this, "Check your inbox...", Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            Toast.makeText(Login.this, resetTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                        progressDialog.dismiss();
+                                                    });
                                         } else {
-                                            Toast.makeText(Login.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            // Email does not exist in the database
+                                            progressDialog.dismiss();
+                                            Toast.makeText(Login.this, "Email not found. Please sign up first.", Toast.LENGTH_SHORT).show();
                                         }
+                                    })
+                                    .addOnFailureListener(e -> {
                                         progressDialog.dismiss();
+                                        Toast.makeText(Login.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     });
                         }
                     })
                     .setNegativeButton("Cancel", null);
             forgetPasswordDialog.show();
         });
+
     }
 
     private void navigateBasedOnRole(String role) {
