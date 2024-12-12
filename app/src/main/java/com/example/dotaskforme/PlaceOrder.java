@@ -192,6 +192,7 @@ public class PlaceOrder extends Fragment {
             selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.lightblue)); // Highlight selected button
             tv_example.setText("Up to 3 short practice problems or theoretical questions");
             tv_possible_deliverables.setText("• Simple computations\n• Short answers to questions");
+            pricevalue.setText("$10");
         });
 
         btn_small.setOnClickListener(v -> {
@@ -202,6 +203,7 @@ public class PlaceOrder extends Fragment {
             selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.lightblue));
             tv_example.setText("Small assignment details");
             tv_possible_deliverables.setText("• Detailed report\n• Extended calculations");
+            pricevalue.setText("$20");
         });
 
         btn_medium.setOnClickListener(v -> {
@@ -212,6 +214,7 @@ public class PlaceOrder extends Fragment {
             selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.lightblue));
             tv_example.setText("Medium-sized project description");
             tv_possible_deliverables.setText("• Project analysis\n• Complex diagrams");
+            pricevalue.setText("$50");
         });
 
         btn_large.setOnClickListener(v -> {
@@ -222,6 +225,7 @@ public class PlaceOrder extends Fragment {
             selectedButton.setBackgroundTintList(ContextCompat.getColorStateList(requireContext(), R.color.lightblue));
             tv_example.setText("Large project scope");
             tv_possible_deliverables.setText("• Comprehensive report\n• Advanced analytics");
+            pricevalue.setText("$100");
         });
 
 
