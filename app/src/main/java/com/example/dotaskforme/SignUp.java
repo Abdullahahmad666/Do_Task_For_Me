@@ -3,6 +3,7 @@ package com.example.dotaskforme;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -68,7 +69,7 @@ public class SignUp extends AppCompatActivity {
         gotosignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SignUp.this,Login.class);
+                Intent i = new Intent(SignUp.this, Login.class);
                 startActivity(i);
                 finish();
             }
@@ -88,7 +89,7 @@ public class SignUp extends AppCompatActivity {
         ivbackarrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(SignUp.this,Login.class);
+                Intent i = new Intent(SignUp.this, Login.class);
                 startActivity(i);
                 finish();
             }
@@ -104,7 +105,6 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(SignUp.this, "Google sign-in clicked", Toast.LENGTH_SHORT).show();
             signInWithGoogle();
         });
-
 
 
         btnsignup.setOnClickListener(view -> {
@@ -146,46 +146,85 @@ public class SignUp extends AppCompatActivity {
             progressDialog.show();
 
             // Sign up with Firebase Auth
+            String finalRole = role; // Save role for later use
             auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(task -> {
-                        progressDialog.dismiss();
                         if (task.isSuccessful()) {
-                            String userID = auth.getCurrentUser().getUid();
+                            // Send verification email
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
+                                user.sendEmailVerification().addOnCompleteListener(emailTask -> {
+                                    progressDialog.dismiss();
+                                    if (emailTask.isSuccessful()) {
+                                        Toast.makeText(SignUp.this, "Verification email sent! Please check your email to verify your account.", Toast.LENGTH_LONG).show();
 
-                            // Store user data in Firestore
-                            HashMap<String, Object> data = new HashMap<>();
-                            data.put("firstName", firstName);
-                            data.put("lastName", lastName);
-                            data.put("email", email);
-                            data.put("role", role);
+                                        // Save user data temporarily for later registration
+                                        SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("firstName", firstName);
+                                        editor.putString("lastName", lastName);
+                                        editor.putString("email", email);
+                                        editor.putString("role", finalRole);
+                                        editor.apply();
 
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            db.collection("users")
-                                    .document(userID)
-                                    .set(data)
-                                    .addOnCompleteListener(storeTask -> {
-                                        if (storeTask.isSuccessful()) {
-                                            Toast.makeText(SignUp.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-
-                                            // Navigate to the appropriate activity based on the role
-                                            if ("Student".equalsIgnoreCase(role)) {
-                                                startActivity(new Intent(SignUp.this, MainActivity.class));
-                                            } else if ("Admin".equalsIgnoreCase(role)) {
-                                                startActivity(new Intent(SignUp.this, Admin.class));
-                                            }
-                                            finish(); // Close SignUp activity
-                                        } else {
-                                            Toast.makeText(SignUp.this, "Firestore error: " + storeTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                        auth.signOut(); // Sign out the user until they verify their email
+                                    } else {
+                                        Toast.makeText(SignUp.this, "Failed to send verification email: " + emailTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(SignUp.this, "Sign-up failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         });
 
+// Add this listener to check if the user is verified and then proceed
+        auth.addAuthStateListener(firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null && user.isEmailVerified()) {
+                SharedPreferences sharedPreferences = getSharedPreferences("UserData", MODE_PRIVATE);
+                String firstName = sharedPreferences.getString("firstName", "");
+                String lastName = sharedPreferences.getString("lastName", "");
+                String email = sharedPreferences.getString("email", "");
+                String role = sharedPreferences.getString("role", "");
+
+                String userID = user.getUid();
+
+                // Store user data in Firestore
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("firstName", firstName);
+                data.put("lastName", lastName);
+                data.put("email", email);
+                data.put("role", role);
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("users")
+                        .document(userID)
+                        .set(data)
+                        .addOnCompleteListener(storeTask -> {
+                            if (storeTask.isSuccessful()) {
+                                Toast.makeText(SignUp.this, "Account verified and registered successfully!", Toast.LENGTH_SHORT).show();
+
+                                // Navigate to the appropriate activity based on the role
+                                if ("Student".equalsIgnoreCase(role)) {
+                                    startActivity(new Intent(SignUp.this, MainActivity.class));
+                                } else if ("Admin".equalsIgnoreCase(role)) {
+                                    startActivity(new Intent(SignUp.this, Admin.class));
+                                }
+                                finish(); // Close SignUp activity
+                            } else {
+                                Toast.makeText(SignUp.this, "Firestore error: " + storeTask.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
 
     }
+
+
+
     public void init()
     {
         etfirst = findViewById(R.id.etfirst);
